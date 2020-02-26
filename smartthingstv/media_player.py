@@ -203,7 +203,7 @@ class smartthingstv(MediaPlayerDevice):
                     source_list.append(source)
             return source_list
         else:
-            return self._source_list
+            return self._source_list["value"]
 
     @property
     def channel(self):
