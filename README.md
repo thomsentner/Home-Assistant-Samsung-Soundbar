@@ -53,7 +53,6 @@ media_player:
     api_key: "YOUR API KEY"
     device_id: "YOUR DEVICE ID"
     mac: "YOUR MAC ADDRESS"
-    expand_sources: True
 ```
 
 Tested on:
