@@ -43,8 +43,8 @@ class smartthingstv:
       device_state = data['main']['switch']['value']
       device_source = data['main']['inputSource']['value']
       device_all_sources = json.loads(data['main']['supportedInputSources']['value'])
-      device_tv_chan = data['main']['tvChannel']['value']
-      device_tv_chan_name = data['main']['tvChannelName']['value']
+      device_tv_chan = "NOT SUPPORTED"
+      device_tv_chan_name = "NOT SUPPORTED"
       device_muted = data['main']['mute']['value'] 
       self._state = device_state
       self._volume = device_volume
