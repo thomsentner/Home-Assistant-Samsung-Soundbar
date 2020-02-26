@@ -1,4 +1,4 @@
-# smartthingstv
+# SmartThings Soundbar
 For Controlling a Samsung TV via Smart Things
 
 I am not a developer at all, I am learning python and wanted to try this. Let me know any improvements or issues and i will try help. This is still a WIP.
