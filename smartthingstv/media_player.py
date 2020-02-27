@@ -1,5 +1,4 @@
 """Support for interface with an Samsung TV."""
-import asyncio
 import logging
 import voluptuous as vol
 
@@ -8,25 +7,20 @@ from .smartthingstv.api import smartthingstv as smarttv
 from homeassistant.components.media_player import (
     MediaPlayerDevice,
     PLATFORM_SCHEMA,
-    DEVICE_CLASS_TV,
+    DEVICE_CLASS_SPEAKER,
 )
 from homeassistant.components.media_player.const import (
-    MEDIA_TYPE_CHANNEL,
-    SUPPORT_NEXT_TRACK,
     SUPPORT_PAUSE,
     SUPPORT_PLAY,
-    SUPPORT_PLAY_MEDIA,
-    SUPPORT_PREVIOUS_TRACK,
     SUPPORT_SELECT_SOURCE,
     SUPPORT_TURN_OFF,
     SUPPORT_TURN_ON,
     SUPPORT_VOLUME_MUTE,
     SUPPORT_VOLUME_STEP,
-    SUPPORT_VOLUME_SET,
-    MEDIA_TYPE_APP,
+    SUPPORT_VOLUME_SET
 )
 from homeassistant.const import (
-    CONF_NAME, CONF_API_KEY, CONF_DEVICE_ID, CONF_MAC,
+    CONF_NAME, CONF_API_KEY, CONF_DEVICE_ID
 )
 import homeassistant.helpers.config_validation as cv
 
@@ -51,8 +45,6 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend(
         vol.Required(CONF_API_KEY): cv.string,
         vol.Optional(CONF_NAME, default=DEFAULT_NAME): cv.string,
         vol.Optional(CONF_DEVICE_ID): cv.string,
-        vol.Optional(CONF_MAC): cv.string
-
     }
 )
 
@@ -119,7 +111,7 @@ class smartthingstv(MediaPlayerDevice):
     @property
     def device_class(self):
         """Set the device class to TV."""
-        return DEVICE_CLASS_TV
+        return DEVICE_CLASS_SPEAKER
 
     @property
     def supported_features(self):
@@ -169,4 +161,4 @@ class smartthingstv(MediaPlayerDevice):
 
     @property
     def source_list(self):
-        return self._source_list["value"]
+        return self._source_list

@@ -1,6 +1,12 @@
 # Smartthings TV integration#
 import requests
 import json
+from homeassistant.const import (
+    STATE_IDLE,
+    STATE_OFF,
+    STATE_PLAYING,
+    STATE_PAUSED
+)
 
 API_BASEURL = "https://api.smartthings.com/v1"
 API_DEVICES = API_BASEURL + "/devices/"
@@ -15,20 +21,12 @@ COMMAND_STOP = "{'commands':[{'component': 'main','capability': 'mediaPlayback',
 COMMAND_REWIND = "{'commands':[{'component': 'main','capability': 'mediaPlayback','command': 'rewind'}]}"
 COMMAND_FAST_FORWARD = "{'commands':[{'component': 'main','capability': 'mediaPlayback','command': 'fastForward'}]}"
 
+CONTROLLABLE_SOURCES = ["bluetooth", "wifi"]
+
 
 class smartthingstv:
 
-    def __init__(self):
-        self._state = "off"
-        self._name = name
-        self._muted = False
-        self._volume = 10
-        self._api_key = api_key
-        self._device_id = device_id
-
-    def __exit__(self, type, value, traceback):
-        self.close()
-
+    @staticmethod
     def device_update(self):
         API_KEY = self._api_key
         REQUEST_HEADERS = {"Authorization": "Bearer " + API_KEY}
@@ -41,17 +39,34 @@ class smartthingstv:
         data = resp.json()
         device_volume = data['main']['volume']['value']
         device_volume = int(device_volume) / 100
-        device_state = data['main']['switch']['value']
+        switch_state = data['main']['switch']['value']
+        playback_state = data['main']['playbackStatus']['value']
         device_source = data['main']['inputSource']['value']
         device_all_sources = json.loads(data['main']['supportedInputSources']['value'])
         device_muted = data['main']['mute']['value'] != "unmuted"
-        self._state = device_state
+
+        if switch_state == "on":
+            if device_source in CONTROLLABLE_SOURCES:
+                if playback_state == "playing":
+                    self._state = STATE_PLAYING
+                elif playback_state == "paused":
+                    self._state = STATE_PAUSED
+                else:
+                    self._state = STATE_IDLE
+            else:
+                self._state = STATE_IDLE
+        else:
+            self._state = STATE_OFF
         self._volume = device_volume
-        self._source_list = device_all_sources
+        self._source_list = device_all_sources["value"]
         self._muted = device_muted
         self._source = device_source
-        self._media_title = data['main']['trackDescription']['value']
+        if self._state in [STATE_PLAYING, STATE_PAUSED]:
+            self._media_title = data['main']['trackDescription']['value']
+        else:
+            self._media_title = None
 
+    @staticmethod
     def send_command(self, command, cmdtype):
         API_KEY = self._api_key
         REQUEST_HEADERS = {"Authorization": "Bearer " + API_KEY}
@@ -81,12 +96,13 @@ class smartthingstv:
             cmdurl = requests.post(API_COMMAND, data=COMMAND_POWER_OFF, headers=REQUEST_HEADERS)
         elif cmdtype == "switch_on":  # turns on
             cmdurl = requests.post(API_COMMAND, data=COMMAND_POWER_ON, headers=REQUEST_HEADERS)
-        elif cmdtype == "play":  # pause
+        elif cmdtype == "play":  # play
             cmdurl = requests.post(API_COMMAND, data=COMMAND_PLAY, headers=REQUEST_HEADERS)
-        elif cmdtype == "pause":  # play
+        elif cmdtype == "pause":  # pause
             cmdurl = requests.post(API_COMMAND, data=COMMAND_PAUSE, headers=REQUEST_HEADERS)
         elif cmdtype == "selectsource":  # changes source
             API_COMMAND_DATA = "{'commands':[{'component': 'main','capability': 'mediaInputSource','command': 'setInputSource', 'arguments': "
             API_COMMAND_ARG = "['{}']}}]}}".format(command)
             API_FULL = API_COMMAND_DATA + API_COMMAND_ARG
             cmdurl = requests.post(API_COMMAND, data=API_FULL, headers=REQUEST_HEADERS)
+        self.async_schedule_update_ha_state()
