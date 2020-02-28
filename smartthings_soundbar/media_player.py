@@ -1,7 +1,7 @@
 import logging
 import voluptuous as vol
 
-from .api import soundbar_api
+from .api import SoundbarApi
 
 from homeassistant.components.media_player import (
     MediaPlayerDevice,
@@ -26,8 +26,9 @@ import homeassistant.helpers.config_validation as cv
 _LOGGER = logging.getLogger(__name__)
 
 DEFAULT_NAME = "SmartThings Soundbar"
+CONF_MAX_VOLUME = "max_volume"
 
-SUPPORT_SAMSUNGTV = (
+SUPPORT_SMARTTHINGS_SOUNDBAR = (
         SUPPORT_PAUSE
         | SUPPORT_VOLUME_STEP
         | SUPPORT_VOLUME_MUTE
@@ -44,6 +45,7 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend(
         vol.Required(CONF_API_KEY): cv.string,
         vol.Optional(CONF_NAME, default=DEFAULT_NAME): cv.string,
         vol.Optional(CONF_DEVICE_ID): cv.string,
+        vol.Optional(CONF_MAX_VOLUME, default=1): cv.positive_int,
     }
 )
 
@@ -52,15 +54,17 @@ def setup_platform(hass, config, add_entities, discovery_info=None):
     name = config.get(CONF_NAME)
     api_key = config.get(CONF_API_KEY)
     device_id = config.get(CONF_DEVICE_ID)
-    add_entities([SmartThingsSoundbarMediaPlayer(name, api_key, device_id)])
+    max_volume = config.get(CONF_MAX_VOLUME)
+    add_entities([SmartThingsSoundbarMediaPlayer(name, api_key, device_id, max_volume)])
 
 
 class SmartThingsSoundbarMediaPlayer(MediaPlayerDevice):
 
-    def __init__(self, name, api_key, device_id):
+    def __init__(self, name, api_key, device_id, max_volume):
         self._name = name
         self._device_id = device_id
         self._api_key = api_key
+        self._max_volume = max_volume
         self._volume = 1
         self._muted = False
         self._playing = True
@@ -70,35 +74,34 @@ class SmartThingsSoundbarMediaPlayer(MediaPlayerDevice):
         self._media_title = ""
 
     def update(self):
-        soundbar_api.device_update(self)
+        SoundbarApi.device_update(self)
 
     def turn_off(self):
         arg = ""
         cmdtype = "switch_off"
-        soundbar_api.send_command(self, arg, cmdtype)
+        SoundbarApi.send_command(self, arg, cmdtype)
 
     def turn_on(self):
         arg = ""
         cmdtype = "switch_on"
-        soundbar_api.send_command(self, arg, cmdtype)
+        SoundbarApi.send_command(self, arg, cmdtype)
 
     def set_volume_level(self, arg, cmdtype="setvolume"):
-        VOLUME_LEVEL = int(arg * 100)
-        soundbar_api.send_command(self, VOLUME_LEVEL, cmdtype)
+        SoundbarApi.send_command(self, arg, cmdtype)
 
     def mute_volume(self, mute, cmdtype="audiomute"):
-        soundbar_api.send_command(self, mute, cmdtype)
+        SoundbarApi.send_command(self, mute, cmdtype)
 
     def volume_up(self, cmdtype="stepvolume"):
         arg = "up"
-        soundbar_api.send_command(self, arg, cmdtype)
+        SoundbarApi.send_command(self, arg, cmdtype)
 
     def volume_down(self, cmdtype="stepvolume"):
         arg = ""
-        soundbar_api.send_command(self, arg, cmdtype)
+        SoundbarApi.send_command(self, arg, cmdtype)
 
     def select_source(self, source, cmdtype="selectsource"):
-        soundbar_api.send_command(self, source, cmdtype)
+        SoundbarApi.send_command(self, source, cmdtype)
 
     @property
     def device_class(self):
@@ -106,7 +109,7 @@ class SmartThingsSoundbarMediaPlayer(MediaPlayerDevice):
 
     @property
     def supported_features(self):
-        return SUPPORT_SAMSUNGTV
+        return SUPPORT_SMARTTHINGS_SOUNDBAR
 
     @property
     def name(self):
@@ -119,12 +122,12 @@ class SmartThingsSoundbarMediaPlayer(MediaPlayerDevice):
     def media_play(self):
         arg = ""
         cmdtype = "play"
-        soundbar_api.send_command(self, arg, cmdtype)
+        SoundbarApi.send_command(self, arg, cmdtype)
 
     def media_pause(self):
         arg = ""
         cmdtype = "pause"
-        soundbar_api.send_command(self, arg, cmdtype)
+        SoundbarApi.send_command(self, arg, cmdtype)
 
     @property
     def state(self):

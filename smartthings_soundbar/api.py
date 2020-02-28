@@ -23,7 +23,7 @@ COMMAND_FAST_FORWARD = "{'commands':[{'component': 'main','capability': 'mediaPl
 CONTROLLABLE_SOURCES = ["bluetooth", "wifi"]
 
 
-class soundbar_api:
+class SoundbarApi:
 
     @staticmethod
     def device_update(self):
@@ -37,7 +37,7 @@ class soundbar_api:
         resp = requests.get(API_DEVICE_STATUS, headers=REQUEST_HEADERS)
         data = resp.json()
         device_volume = data['main']['volume']['value']
-        device_volume = int(device_volume) / 100
+        device_volume = min(int(device_volume) / self._max_volume, 1)
         switch_state = data['main']['switch']['value']
         playback_state = data['main']['playbackStatus']['value']
         device_source = data['main']['inputSource']['value']
@@ -66,7 +66,7 @@ class soundbar_api:
             self._media_title = None
 
     @staticmethod
-    def send_command(self, command, cmdtype):
+    def send_command(self, argument, cmdtype):
         API_KEY = self._api_key
         REQUEST_HEADERS = {"Authorization": "Bearer " + API_KEY}
         DEVICE_ID = self._device_id
@@ -76,11 +76,12 @@ class soundbar_api:
 
         if cmdtype == "setvolume":  # sets volume
             API_COMMAND_DATA = "{'commands':[{'component': 'main','capability': 'audioVolume','command': 'setVolume','arguments': "
-            API_COMMAND_ARG = "[{}]}}]}}".format(command)
+            volume = int(argument * self._max_volume)
+            API_COMMAND_ARG = "[{}]}}]}}".format(volume)
             API_FULL = API_COMMAND_DATA + API_COMMAND_ARG
             cmdurl = requests.post(API_COMMAND, data=API_FULL, headers=REQUEST_HEADERS)
         elif cmdtype == "stepvolume":  # steps volume up or down
-            if command == "up":
+            if argument == "up":
                 API_COMMAND_DATA = "{'commands':[{'component': 'main','capability': 'audioVolume','command': 'volumeUp'}]}"
                 cmdurl = requests.post(API_COMMAND, data=API_COMMAND_DATA, headers=REQUEST_HEADERS)
             else:
@@ -101,7 +102,7 @@ class soundbar_api:
             cmdurl = requests.post(API_COMMAND, data=COMMAND_PAUSE, headers=REQUEST_HEADERS)
         elif cmdtype == "selectsource":  # changes source
             API_COMMAND_DATA = "{'commands':[{'component': 'main','capability': 'mediaInputSource','command': 'setInputSource', 'arguments': "
-            API_COMMAND_ARG = "['{}']}}]}}".format(command)
+            API_COMMAND_ARG = "['{}']}}]}}".format(argument)
             API_FULL = API_COMMAND_DATA + API_COMMAND_ARG
             cmdurl = requests.post(API_COMMAND, data=API_FULL, headers=REQUEST_HEADERS)
         self.async_schedule_update_ha_state()
