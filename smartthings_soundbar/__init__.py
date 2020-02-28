@@ -1,0 +1,1 @@
+# SmartThings Soundbar init

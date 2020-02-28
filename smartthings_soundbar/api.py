@@ -1,4 +1,3 @@
-# Smartthings TV integration#
 import requests
 import json
 from homeassistant.const import (
@@ -24,7 +23,7 @@ COMMAND_FAST_FORWARD = "{'commands':[{'component': 'main','capability': 'mediaPl
 CONTROLLABLE_SOURCES = ["bluetooth", "wifi"]
 
 
-class smartthingstv:
+class soundbar_api:
 
     @staticmethod
     def device_update(self):

@@ -48,11 +48,10 @@ In your configuration.yaml add:
 
 ```
 media_player:
-  - platform: smartthingstv
+  - platform: smartthings_soundbar
     name: My TV name
     api_key: "YOUR API KEY"
     device_id: "YOUR DEVICE ID"
-    mac: "YOUR MAC ADDRESS"
 ```
 
 Tested on:
