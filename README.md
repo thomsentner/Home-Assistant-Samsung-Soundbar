@@ -1,6 +1,10 @@
 # SmartThings Soundbar
 
-Adds support for SmartThings-enabled Soundbar
+
+[![buymeacoffee_badge](https://img.shields.io/badge/Donate-buymeacoffe-ff813f?style=flat)](https://www.buymeacoffee.com/PiotrMachowski)
+
+
+Adds support for SmartThings enabled Soundbar
 
 # Features
 
@@ -35,5 +39,8 @@ media_player:
 
 Tested on:
 
-Samsung HW-Q80R
-Samsung HW-Q70R
+- Samsung HW-Q80R
+- Samsung HW-Q70R
+
+
+<a href="https://www.buymeacoffee.com/PiotrMachowski" target="_blank"><img src="https://bmc-cdn.nyc3.digitaloceanspaces.com/BMC-button-images/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: auto !important;width: auto !important;" ></a>
