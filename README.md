@@ -25,8 +25,8 @@ Adds support for SmartThings enabled Soundbar
 | Key | Type | Required | Default | Description |
 | --- | --- | --- | --- | --- |
 | `name` | `string` | `False` | `SmartThings Soundbar` | Name of soundbar |
-| `api_key` | `string` | `True` | - | SmartThings API key (see: [here](#Getting API key and device id)) |
-| `device_id` | `string` | `True` | - | SmartThings device id (see: [here](#Getting API key and device id)) |
+| `api_key` | `string` | `True` | - | SmartThings API key (see: [here](https://github.com/PiotrMachowski/Home-Assistant-custom-components-SmartThings-Soundbar#getting-api-key-and-device-id)) |
+| `device_id` | `string` | `True` | - | SmartThings device id (see: [here](https://github.com/PiotrMachowski/Home-Assistant-custom-components-SmartThings-Soundbar#getting-api-key-and-device-id)) |
 | `max_volume` | `positive integer` | `False` | 100 | Volume level that will be used as a maximum level in Home Assistant |
 
 ## Example usage
