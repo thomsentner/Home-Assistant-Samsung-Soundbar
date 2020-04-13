@@ -54,12 +54,13 @@ Go [here](https://graph-eu01-euwest1.api.smartthings.com/device/list) for your d
 
 ## Installation
 
-Download [*media_player.py*](https://github.com/PiotrMachowski/Home-Assistant-custom-components-SmartThings-Soundbar/raw/master/custom_components/smartthings_soundbar/media_player.py)
+Download [*media_player.py*](https://github.com/PiotrMachowski/Home-Assistant-custom-components-SmartThings-Soundbar/raw/master/custom_components/smartthings_soundbar/media_player.py), [*api.py*](https://github.com/PiotrMachowski/Home-Assistant-custom-components-SmartThings-Soundbar/raw/master/custom_components/smartthings_soundbar/api.py),
 and [*manifest.json*](https://github.com/PiotrMachowski/Home-Assistant-custom-components-SmartThings-Soundbar/raw/master/custom_components/smartthings_soundbar/manifest.json) to `config/custom_components/smartthings_soundbar` directory:
 ```bash
 mkdir -p custom_components/smartthings_soundbar
 cd custom_components/smartthings_soundbar
 wget https://github.com/PiotrMachowski/Home-Assistant-custom-components-SmartThings-Soundbar/raw/master/custom_components/smartthings_soundbar/media_player.py
+wget https://github.com/PiotrMachowski/Home-Assistant-custom-components-SmartThings-Soundbar/raw/master/custom_components/smartthings_soundbar/api.py
 wget https://github.com/PiotrMachowski/Home-Assistant-custom-components-SmartThings-Soundbar/raw/master/custom_components/smartthings_soundbar/manifest.json
 ```
 
