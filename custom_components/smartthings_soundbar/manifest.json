@@ -4,5 +4,5 @@
   "documentation": "https://github.com/PiotrMachowski/Home-Assistant-custom-components-SmartThings-Soundbar",
   "requirements": [],
   "dependencies": [],
-  "codeowners": ["PiotrMachowski"]
+  "codeowners": ["@PiotrMachowski"]
 }

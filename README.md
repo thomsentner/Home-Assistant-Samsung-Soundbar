@@ -68,6 +68,7 @@ wget https://github.com/PiotrMachowski/Home-Assistant-custom-components-SmartThi
 
 Tested on:
 
+- Samsung HW-Q90R
 - Samsung HW-Q80R
 - Samsung HW-Q70R
 
