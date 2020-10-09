@@ -4,7 +4,7 @@ import voluptuous as vol
 from .api import SoundbarApi
 
 from homeassistant.components.media_player import (
-    MediaPlayerDevice,
+    MediaPlayerEntity,
     PLATFORM_SCHEMA,
     DEVICE_CLASS_SPEAKER,
 )
@@ -57,7 +57,7 @@ def setup_platform(hass, config, add_entities, discovery_info=None):
     add_entities([SmartThingsSoundbarMediaPlayer(name, api_key, device_id, max_volume)])
 
 
-class SmartThingsSoundbarMediaPlayer(MediaPlayerDevice):
+class SmartThingsSoundbarMediaPlayer(MediaPlayerEntity):
 
     def __init__(self, name, api_key, device_id, max_volume):
         self._name = name
