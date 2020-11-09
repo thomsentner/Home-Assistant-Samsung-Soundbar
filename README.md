@@ -54,6 +54,16 @@ Go [here](https://graph-eu01-euwest1.api.smartthings.com/device/list) for your d
 
 ## Installation
 
+### Using [HACS](https://hacs.xyz/) (recommended)
+
+This integration can be added to HACS as a [custom repository](https://hacs.xyz/docs/faq/custom_repositories):
+* URL: `https://github.com/PiotrMachowski/Home-Assistant-custom-components-SmartThings-Soundbar`
+* Category: `Integration`
+
+After adding a custom repository you can use HACS to install this integration using user interface.
+
+### Manual
+
 Download [*media_player.py*](https://github.com/PiotrMachowski/Home-Assistant-custom-components-SmartThings-Soundbar/raw/master/custom_components/smartthings_soundbar/media_player.py), [*api.py*](https://github.com/PiotrMachowski/Home-Assistant-custom-components-SmartThings-Soundbar/raw/master/custom_components/smartthings_soundbar/api.py),
 and [*manifest.json*](https://github.com/PiotrMachowski/Home-Assistant-custom-components-SmartThings-Soundbar/raw/master/custom_components/smartthings_soundbar/manifest.json) to `config/custom_components/smartthings_soundbar` directory:
 ```bash
@@ -64,10 +74,11 @@ wget https://github.com/PiotrMachowski/Home-Assistant-custom-components-SmartThi
 wget https://github.com/PiotrMachowski/Home-Assistant-custom-components-SmartThings-Soundbar/raw/master/custom_components/smartthings_soundbar/manifest.json
 ```
 
+## Supported devices
 
+This integration was confirmed to work with following devices:
 
-Tested on:
-
+- Samsung HW-N950
 - Samsung HW-Q90R
 - Samsung HW-Q80R
 - Samsung HW-Q70R
