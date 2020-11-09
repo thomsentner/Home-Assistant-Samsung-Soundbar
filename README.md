@@ -74,6 +74,14 @@ wget https://github.com/PiotrMachowski/Home-Assistant-custom-components-SmartThi
 wget https://github.com/PiotrMachowski/Home-Assistant-custom-components-SmartThings-Soundbar/raw/master/custom_components/smartthings_soundbar/manifest.json
 ```
 
+### Known problems
+
+* If you have config validation issues after installing this component you have to follow these steps:
+  * Install custom component
+  * Restart Home Assistant
+  * Add configuration
+  * Restart Home Assistant again
+
 ## Supported devices
 
 This integration was confirmed to work with following devices:
