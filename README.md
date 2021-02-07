@@ -89,10 +89,10 @@ This integration was confirmed to work with following devices:
 
 - Samsung HW-N950
 - Samsung HW-Q800T
+- Samsung HW-Q950T
 - Samsung HW-Q90R
 - Samsung HW-Q80R
 - Samsung HW-Q70R
-- Samsung HW-Q950T
 
 
 <a href="https://www.buymeacoffee.com/PiotrMachowski" target="_blank"><img src="https://bmc-cdn.nyc3.digitaloceanspaces.com/BMC-button-images/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: auto !important;width: auto !important;" ></a>
