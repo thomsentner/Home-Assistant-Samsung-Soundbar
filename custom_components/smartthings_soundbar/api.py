@@ -1,11 +1,7 @@
-import requests
 import json
-from homeassistant.const import (
-    STATE_IDLE,
-    STATE_OFF,
-    STATE_PLAYING,
-    STATE_PAUSED
-)
+
+import requests
+from homeassistant.const import (STATE_IDLE, STATE_OFF, STATE_ON, STATE_PAUSED, STATE_PLAYING)
 
 API_BASEURL = "https://api.smartthings.com/v1"
 API_DEVICES = API_BASEURL + "/devices/"
@@ -51,16 +47,16 @@ class SoundbarApi:
                 elif playback_state == "paused":
                     self._state = STATE_PAUSED
                 else:
-                    self._state = STATE_IDLE
+                    self._state = STATE_ON
             else:
-                self._state = STATE_IDLE
+                self._state = STATE_ON
         else:
             self._state = STATE_OFF
         self._volume = device_volume
         self._source_list = device_all_sources if type(device_all_sources) is list else device_all_sources["value"]
         self._muted = device_muted
         self._source = device_source
-        if self._state in [STATE_PLAYING, STATE_PAUSED]:
+        if self._state in [STATE_PLAYING, STATE_PAUSED] and 'trackDescription' in data['main']:
             self._media_title = data['main']['trackDescription']['value']
         else:
             self._media_title = None
