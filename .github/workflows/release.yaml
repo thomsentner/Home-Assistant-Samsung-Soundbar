@@ -1,0 +1,27 @@
+name: Release
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  release:
+    name: Prepare release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download repo
+        uses: actions/checkout@v1
+
+      - name: Zip smartthings_soundbar dir
+        run: |
+          cd /home/runner/work/Home-Assistant-custom-components-SmartThings-Soundbar/Home-Assistant-custom-components-SmartThings-Soundbar/custom_components/smartthings_soundbar
+          zip smartthings_soundbar.zip -r ./
+
+      - name: Upload zip to release
+        uses: svenstaro/upload-release-action@v1-release
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: /home/runner/work/Home-Assistant-custom-components-SmartThings-Soundbar/Home-Assistant-custom-components-SmartThings-Soundbar/custom_components/smartthings_soundbar/smartthings_soundbar.zip
+          asset_name: smartthings_soundbar.zip
+          tag: ${{ github.ref }}
+          overwrite: true
