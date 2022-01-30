@@ -108,6 +108,8 @@ This integration was confirmed to work with following devices:
 - Samsung HW-Q90R
 - Samsung HW-Q80R
 - Samsung HW-Q70R
+- Samsung HW-S60T
+- Samsung HW-S61T
 
 
 <a href="https://www.buymeacoffee.com/PiotrMachowski" target="_blank"><img src="https://bmc-cdn.nyc3.digitaloceanspaces.com/BMC-button-images/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: auto !important;width: auto !important;" ></a>
