@@ -105,6 +105,7 @@ This integration was confirmed to work with following devices:
 - Samsung HW-N950
 - Samsung HW-Q800T
 - Samsung HW-Q950T
+- Samsung HW-Q990B
 - Samsung HW-Q90R
 - Samsung HW-Q80R
 - Samsung HW-Q70R
