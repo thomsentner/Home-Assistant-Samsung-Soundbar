@@ -12,6 +12,7 @@ from homeassistant.components.media_player.const import (
     SUPPORT_PAUSE,
     SUPPORT_PLAY,
     SUPPORT_SELECT_SOURCE,
+    SUPPORT_SELECT_SOUND_MODE,
     SUPPORT_TURN_OFF,
     SUPPORT_TURN_ON,
     SUPPORT_VOLUME_MUTE,
@@ -34,6 +35,7 @@ SUPPORT_SMARTTHINGS_SOUNDBAR = (
         | SUPPORT_VOLUME_MUTE
         | SUPPORT_VOLUME_SET
         | SUPPORT_SELECT_SOURCE
+        | SUPPORT_SELECT_SOUND_MODE
         | SUPPORT_TURN_OFF
         | SUPPORT_TURN_ON
         | SUPPORT_PLAY
@@ -70,6 +72,8 @@ class SmartThingsSoundbarMediaPlayer(MediaPlayerEntity):
         self._state = "on"
         self._source = ""
         self._source_list = []
+        self._soundmode = "standard"
+        self._soundmode_list = []
         self._media_title = ""
 
     def update(self):
@@ -147,3 +151,11 @@ class SmartThingsSoundbarMediaPlayer(MediaPlayerEntity):
     @property
     def source_list(self):
         return self._source_list
+
+    @property
+    def soundmode(self):
+        return self._soundmode
+
+    @property
+    def soundmode_list(self):
+        return self._soundmode_list
