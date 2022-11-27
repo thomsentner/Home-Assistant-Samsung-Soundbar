@@ -26,7 +26,7 @@ import homeassistant.helpers.config_validation as cv
 
 _LOGGER = logging.getLogger(__name__)
 
-DEFAULT_NAME = "SmartThings Soundbar"
+DEFAULT_NAME = "SmartThings Soundbar Test"
 CONF_MAX_VOLUME = "max_volume"
 
 SUPPORT_SMARTTHINGS_SOUNDBAR = (
@@ -72,8 +72,8 @@ class SmartThingsSoundbarMediaPlayer(MediaPlayerEntity):
         self._state = "on"
         self._source = ""
         self._source_list = []
-        self._soundmode = "standard"
-        self._soundmode_list = []
+        self._sound_mode = "standard"
+        self._sound_mode_list = []
         self._media_title = ""
 
     def update(self):
@@ -153,9 +153,9 @@ class SmartThingsSoundbarMediaPlayer(MediaPlayerEntity):
         return self._source_list
 
     @property
-    def soundmode(self):
-        return self._soundmode
+    def sound_mode(self):
+        return self._sound_mode
 
     @property
-    def soundmode_list(self):
-        return self._soundmode_list
+    def sound_mode_list(self):
+        return self._sound_mode_list
