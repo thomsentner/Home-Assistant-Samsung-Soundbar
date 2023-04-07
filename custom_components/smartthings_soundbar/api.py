@@ -39,6 +39,7 @@ class SoundbarApi:
         device_source = data['main']['inputSource']['value']
         device_all_sources = json.loads(data['main']['supportedInputSources']['value'])
         device_muted = data['main']['mute']['value'] != "unmuted"
+        device_soundmode = json.loads(data['main']['data']['value'])['payload']['x.com.samsung.networkaudio.soundmode']
 
         if switch_state == "on":
             if device_source in CONTROLLABLE_SOURCES:
@@ -56,6 +57,7 @@ class SoundbarApi:
         self._source_list = device_all_sources if type(device_all_sources) is list else device_all_sources["value"]
         self._muted = device_muted
         self._source = device_source
+        self._sound_mode = device_soundmode
         if self._state in [STATE_PLAYING, STATE_PAUSED] and 'trackDescription' in data['main']:
             self._media_title = data['main']['trackDescription']['value']
         else:
