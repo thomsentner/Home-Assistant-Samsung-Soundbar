@@ -18,7 +18,6 @@ COMMAND_FAST_FORWARD = "{'commands':[{'component': 'main','capability': 'mediaPl
 
 CONTROLLABLE_SOURCES = ["bluetooth", "wifi"]
 
-
 class SoundbarApi:
 
     @staticmethod
@@ -39,10 +38,6 @@ class SoundbarApi:
         device_source = data['main']['inputSource']['value']
         device_all_sources = json.loads(data['main']['supportedInputSources']['value'])
         device_muted = data['main']['mute']['value'] != "unmuted"
-
-        sourceFile = open('HOUBA.txt', 'w')
-        print(data, file = sourceFile)
-        sourceFile.close()
 
         if switch_state == "on":
             if device_source in CONTROLLABLE_SOURCES:
@@ -70,23 +65,12 @@ class SoundbarApi:
         cmdurl = requests.post(API_COMMAND, data=API_FULL, headers=REQUEST_HEADERS)
         resp = requests.get(API_DEVICE_STATUS, headers=REQUEST_HEADERS)
         data = resp.json()
-        
-        sourceFile = open('HOUBA.txt', 'w')
-        print(data, file = sourceFile)
-        sourceFile.close()
-        
  
         device_soundmode = data['data']['value']['payload']['x.com.samsung.networkaudio.soundmode']
         device_soundmode_list = data['data']['value']['payload']['x.com.samsung.networkaudio.supportedSoundmode']
         self._sound_mode = device_soundmode
         self._sound_mode_list = device_soundmode_list
         
-        sourceFile = open('HOUBA.txt', 'w')
-        print(device_soundmode, file = sourceFile)
-        sourceFile.close()
-         
-    
-
     @staticmethod
     def send_command(self, argument, cmdtype):
         API_KEY = self._api_key
@@ -207,7 +191,3 @@ class SoundbarApiSwitch:
                 cmdurl = requests.post(API_COMMAND, data=API_FULL, headers=REQUEST_HEADERS)
 
         self.async_schedule_update_ha_state()
-
-#        sourceFile = open('HOUBA.txt', 'w')
-#        print(nightmode_state, file = sourceFile)
-#        sourceFile.close()
