@@ -5,7 +5,7 @@
   "issue_tracker": "https://github.com/thierry-rhone/Home-Assistant-custom-components-SmartThings-Soundbar/issues",
   "requirements": [],
   "dependencies": [],
-  "codeowners": ["@PiotrMachowski","@mimale","thierry-rhone"],
+  "codeowners": ["@PiotrMachowski","@mimale","@thierry-rhone"],
   "version": "v2.0.1",
   "iot_class": "cloud_polling"
 }
