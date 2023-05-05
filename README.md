@@ -40,20 +40,21 @@ media_player:
 ```
 
 ```yaml
-- platform: smartthings_soundbar
-   name: night_mode
-   api_key: "YOUR API KEY"
-   device_id: "YOUR DEVICE ID"
+switch:
+  - platform: smartthings_soundbar
+     name: night_mode
+     api_key: "YOUR API KEY"
+     device_id: "YOUR DEVICE ID"
 
- - platform: smartthings_soundbar
-   name: bass_boost
-   api_key: "YOUR API KEY"
-   device_id: !secret smartthings_soundbar_device_id
+   - platform: smartthings_soundbar
+     name: bass_boost
+     api_key: "YOUR API KEY"
+     device_id: !secret smartthings_soundbar_device_id
 
- - platform: smartthings_soundbar
-   name: voice_amplifier
-   api_key: "YOUR API KEY"
-   device_id: "YOUR DEVICE ID"
+   - platform: smartthings_soundbar
+     name: voice_amplifier
+     api_key: "YOUR API KEY"
+     device_id: "YOUR DEVICE ID"
 ```
 
 (You can use !secret to avoid repeating Api key and Device ID)
