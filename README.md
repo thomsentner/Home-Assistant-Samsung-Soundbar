@@ -75,12 +75,12 @@ Go [here](https://graph-eu01-euwest1.api.smartthings.com/device/list) for your d
 
 ### Manual
 
-To install this integration manually you have to download [*smartthings_soundbar.zip*](https://github.com/PiotrMachowski/Home-Assistant-custom-components-SmartThings-Soundbar/releases/latest/download/smartthings_soundbar.zip) and extract its contents to `config/custom_components/smartthings_soundbar` directory:
+To install this integration manually you have to download [*smartthings_soundbar.zip*](https://github.com/ThierryBourbon/Home-Assistant-custom-components-SmartThings-Soundbar/blob/master/smartthings_soundbar.zip) and extract its contents to `config/custom_components/smartthings_soundbar` directory:
 
 ```bash
 mkdir -p custom_components/smartthings_soundbar
 cd custom_components/smartthings_soundbar
-wget https://github.com/thierry-rhone/Home-Assistant-custom-components-SmartThings-Soundbar/releases/latest/download/smartthings_soundbar.zip
+wget https://github.com/ThierryBourbon/Home-Assistant-custom-components-SmartThings-Soundbar/blob/master/smartthings_soundbar.zip
 unzip smartthings_soundbar.zip
 rm smartthings_soundbar.zip
 ```
