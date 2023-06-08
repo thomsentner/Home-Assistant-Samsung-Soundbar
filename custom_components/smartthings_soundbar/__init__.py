@@ -3,7 +3,7 @@ import logging
 import voluptuous as vol
 
 # VERSION
-VERSION = '2.1'
+VERSION = '2.2.1'
 
 # REQUIREMENTS
 REQUIREMENTS = ['beautifulsoup4==4.6.3']
