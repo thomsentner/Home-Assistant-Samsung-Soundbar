@@ -31,35 +31,25 @@ Adds support for SmartThings enabled Soundbar
 ## Examples usage
 
 ```yaml
-media_player:
-  - platform: smartthings_soundbar
-    name: Soundbar
-    api_key: "YOUR API KEY"
-    device_id: "YOUR DEVICE ID"
-    max_volume: 30
+smartthings_soundbar:
+  devices:
+    - name: Barre de son
+      api_key: b13391c7-8cef-4518-a58e-393b079b4bf5
+      device_id: da93855b-45cd-6ca0-86d6-2c9570165eb8
+      max_volume: 100
 ```
 
-```yaml
-switch:
-  - platform: smartthings_soundbar
-     name: night_mode
-     api_key: "YOUR API KEY"
-     device_id: "YOUR DEVICE ID"
+## Device
 
-   - platform: smartthings_soundbar
-     name: bass_boost
-     api_key: "YOUR API KEY"
-     device_id: !secret smartthings_soundbar_device_id
+this integration creates a device
+composed of a media player and 3 switches
+- bass_boost
+- Night_mode
+- voice_amplifier
 
-   - platform: smartthings_soundbar
-     name: voice_amplifier
-     api_key: "YOUR API KEY"
-     device_id: "YOUR DEVICE ID"
-```
+You can group them on an entities card
 
-(You can use !secret to avoid repeating Api key and Device ID)
-
-
+![Alt text](entities_card.png)
 
 ## Getting API key and device id
 

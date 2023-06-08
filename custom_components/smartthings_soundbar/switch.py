@@ -1,43 +1,75 @@
+"""SmartThings Soundbar Switchs    """
 import logging
+import asyncio
 import voluptuous as vol
+from datetime import timedelta
 
 from .api import SoundbarApiSwitch
 
+
+
+
+# From homeassistant
+from custom_components.smartthings_soundbar import _LOGGER, DOMAIN as SOUNDBAR_DOMAIN
 from homeassistant.components.switch import (
     SwitchEntity,
-    PLATFORM_SCHEMA,
 )
-from homeassistant.const import (
-    CONF_NAME, CONF_API_KEY, CONF_DEVICE_ID
-)
+
 import homeassistant.helpers.config_validation as cv
+from homeassistant.util import Throttle
 
 _LOGGER = logging.getLogger(__name__)
 
-DEFAULT_NAME = "night_mode"
+# VERSION
+VERSION = "2.1"
 
-PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend(
-    {
-        vol.Required(CONF_API_KEY): cv.string,
-        vol.Optional(CONF_NAME, default=DEFAULT_NAME): cv.string,
-        vol.Optional(CONF_DEVICE_ID): cv.string,
-    }
-)
+# Dependencies
+DEPENDENCIES = ["soundbar"]
 
-def setup_platform(hass, config, add_entities, discovery_info=None):
-    name = config.get(CONF_NAME)
-    api_key = config.get(CONF_API_KEY)
-    device_id = config.get(CONF_DEVICE_ID)
-    add_entities([SmartThingsSoundbarMediaPlayer(name, api_key, device_id )])
+# DEFAULTS
+MODE_LIST = [ "night_mode", "bass_boost", "voice_amplifier"]
 
-class SmartThingsSoundbarMediaPlayer(SwitchEntity):
+# GLOBALS
+mode_courant =""
 
-    def __init__(self, name, api_key, device_id ):
-        self._name = name
-        self._device_id = device_id
-        self._api_key = api_key
+# Return cached results if last scan was less then this time ago.
+MIN_TIME_BETWEEN_SCANS = timedelta(seconds=10)
+MIN_TIME_BETWEEN_FORCED_SCANS = timedelta(seconds=5)
+
+
+# SETUP PLATFORM
+async def async_setup_platform(hass, config, async_add_entities, discovery_info=None):
+    """Set up platform."""
+    """Initialize the Soundbar device."""
+    devices = []
+    soundbar_list = hass.data[SOUNDBAR_DOMAIN]
+
+    for device in soundbar_list:
+        _LOGGER.debug("Configured a new SoundbarSwitch %s", device.name)
+        for m in MODE_LIST:
+
+            global mode_courant
+            mode_courant = m
+            devices.append(SoundbarSwitch (device))
+    
+    async_add_entities(devices, update_before_add=True)
+
+class SoundbarSwitch  (SwitchEntity):
+    def __init__(self, SoundbarSwitchEntity):
+
+        global mode_courant
+        self._mode = mode_courant
+        self._name = SoundbarSwitchEntity.name + "_" + mode_courant
+        self._device_id = SoundbarSwitchEntity.device_id
+        self._api_key = SoundbarSwitchEntity.api_key
+        self._max_volume = SoundbarSwitchEntity.max_volume
         self._state = "off"
-        self._night_mode = False
+
+    # Run when added to HASS TO LOAD SOURCES
+    async def async_added_to_hass(self):
+        """Run when entity about to be added."""
+        await super().async_added_to_hass()
+
 
     def update(self):
         SoundbarApiSwitch.device_update(self)
@@ -56,8 +88,11 @@ class SmartThingsSoundbarMediaPlayer(SwitchEntity):
     def name(self):
         return self._name
 
+
+    @property
+    def mode(self):
+        return self._mode 
+    
     @property
     def state(self):
         return self._state
-
-

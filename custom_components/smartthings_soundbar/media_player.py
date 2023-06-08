@@ -1,164 +1,277 @@
-import logging
-import voluptuous as vol
+import json
 
-from .api import SoundbarApi
-
-from homeassistant.components.media_player import (
-    MediaPlayerEntity,
-    PLATFORM_SCHEMA,
-    DEVICE_CLASS_SPEAKER,
-)
-from homeassistant.components.media_player.const import (
-    SUPPORT_PAUSE,
-    SUPPORT_PLAY,
-    SUPPORT_SELECT_SOURCE,
-    SUPPORT_SELECT_SOUND_MODE,
-    SUPPORT_TURN_OFF,
-    SUPPORT_TURN_ON,
-    SUPPORT_VOLUME_MUTE,
-    SUPPORT_VOLUME_STEP,
-    SUPPORT_VOLUME_SET
-)
+import requests
 from homeassistant.const import (
-    CONF_NAME, CONF_API_KEY, CONF_DEVICE_ID
-)
-import homeassistant.helpers.config_validation as cv
-
-_LOGGER = logging.getLogger(__name__)
-
-DEFAULT_NAME = "SmartThings Soundbar Test"
-CONF_MAX_VOLUME = "max_volume"
-
-SUPPORT_SMARTTHINGS_SOUNDBAR = (
-        SUPPORT_PAUSE
-        | SUPPORT_VOLUME_STEP
-        | SUPPORT_VOLUME_MUTE
-        | SUPPORT_VOLUME_SET
-        | SUPPORT_SELECT_SOURCE
-        | SUPPORT_SELECT_SOUND_MODE
-        | SUPPORT_TURN_OFF
-        | SUPPORT_TURN_ON
-        | SUPPORT_PLAY
+    STATE_IDLE,
+    STATE_OFF,
+    STATE_ON,
+    STATE_PAUSED,
+    STATE_PLAYING,
 )
 
-PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend(
-    {
-        vol.Required(CONF_API_KEY): cv.string,
-        vol.Optional(CONF_NAME, default=DEFAULT_NAME): cv.string,
-        vol.Optional(CONF_DEVICE_ID): cv.string,
-        vol.Optional(CONF_MAX_VOLUME, default=1): cv.positive_int,
-    }
+API_BASEURL = "https://api.smartthings.com/v1"
+API_DEVICES = API_BASEURL + "/devices/"
+
+COMMAND_POWER_ON = (
+    "{'commands': [{'component': 'main','capability': 'switch','command': 'on'}]}"
 )
+COMMAND_POWER_OFF = (
+    "{'commands': [{'component': 'main','capability': 'switch','command': 'off'}]}"
+)
+COMMAND_REFRESH = (
+    "{'commands':[{'component': 'main','capability': 'refresh','command': 'refresh'}]}"
+)
+COMMAND_PAUSE = "{'commands':[{'component': 'main','capability': 'mediaPlayback','command': 'pause'}]}"
+COMMAND_MUTE = (
+    "{'commands':[{'component': 'main','capability': 'audioMute','command': 'mute'}]}"
+)
+COMMAND_UNMUTE = (
+    "{'commands':[{'component': 'main','capability': 'audioMute','command': 'unmute'}]}"
+)
+COMMAND_PLAY = "{'commands':[{'component': 'main','capability': 'mediaPlayback','command': 'play'}]}"
+COMMAND_STOP = "{'commands':[{'component': 'main','capability': 'mediaPlayback','command': 'stop'}]}"
+COMMAND_REWIND = "{'commands':[{'component': 'main','capability': 'mediaPlayback','command': 'rewind'}]}"
+COMMAND_FAST_FORWARD = "{'commands':[{'component': 'main','capability': 'mediaPlayback','command': 'fastForward'}]}"
+
+CONTROLABLE_SOURCES = ["bluetooth", "wifi"]
 
 
-def setup_platform(hass, config, add_entities, discovery_info=None):
-    name = config.get(CONF_NAME)
-    api_key = config.get(CONF_API_KEY)
-    device_id = config.get(CONF_DEVICE_ID)
-    max_volume = config.get(CONF_MAX_VOLUME)
-    add_entities([SmartThingsSoundbarMediaPlayer(name, api_key, device_id, max_volume)])
+
+class SoundbarApi:
+    @staticmethod
+    def device_update(self):
+        request_headers = {"Authorization": "Bearer " + self._api_key}
+        api_device = API_DEVICES + self._device_id
+        api_device_status = api_device + "/states"
+        api_command = api_device + "/commands"
+        try:
+            cmdurl = requests.post(
+                api_command,
+                data=COMMAND_REFRESH,
+                headers=request_headers
+            )
+            resp = requests.get(
+                api_device_status, headers=request_headers,
+            )
+
+        except requests.exceptions.RequestException as e:
+            self._state = STATE_IDLE
+            return e
+
+        data = resp.json()
+        device_volume = data["main"]["volume"]["value"]
+        device_volume = min(int(device_volume) / self._max_volume, 1)
+        switch_state = data["main"]["switch"]["value"]
+        playback_state = data["main"]["playbackStatus"]["value"]
+        device_source = data["main"]["inputSource"]["value"]
+        device_all_sources = json.loads(data["main"]["supportedInputSources"]["value"])
+        device_muted = data["main"]["mute"]["value"] != "unmuted"
+
+        if switch_state == "on":
+            if device_source in CONTROLABLE_SOURCES:
+                if playback_state == "playing":
+                    self._state = STATE_PLAYING
+                elif playback_state == "paused":
+                    self._state = STATE_PAUSED
+                else:
+                    self._state = STATE_ON
+            else:
+                self._state = STATE_ON
+        else:
+            self._state = STATE_OFF
+        self._volume = device_volume
+        self._source_list = (
+            device_all_sources
+            if type(device_all_sources) is list
+            else device_all_sources["value"]
+        )
+        self._muted = device_muted
+        self._source = device_source
+        if (
+            self._state in [STATE_PLAYING, STATE_PAUSED]
+            and "trackDescription" in data["main"]
+        ):
+            self._media_title = data["main"]["trackDescription"]["value"]
+        else:
+            self._media_title = None
+
+        api_device_status = api_device + "/components/main/capabilities/execute/status"
+        API_FULL = "{'commands':[{'component': 'main','capability': 'execute','command': 'execute', 'arguments': ['/sec/networkaudio/soundmode']}]}"
+
+        try:
+            cmdurl = requests.post(
+                api_command, data=API_FULL, headers=request_headers
+            )
+            resp = requests.get(
+                api_device_status, headers=request_headers
+            )
+
+        except requests.exceptions.RequestException as e:
+            self._state = STATE_IDLE
+            return e
+
+        data = resp.json()
+        device_soundmode = data["data"]["value"]["payload"][
+            "x.com.samsung.networkaudio.soundmode"
+        ]
+        device_soundmode_list = data["data"]["value"]["payload"][
+            "x.com.samsung.networkaudio.supportedSoundmode"
+        ]
+        self._sound_mode = device_soundmode
+        self._sound_mode_list = device_soundmode_list
+
+    @staticmethod
+    def send_command(self, argument, cmdtype):
+        request_headers = {"Authorization": "Bearer " + self._api_key}
+        api_device = API_DEVICES + self._device_id
+        api_command = api_device + "/commands"
+
+        if cmdtype == "setvolume":  # sets volume
+            API_COMMAND_DATA = "{'commands':[{'component': 'main','capability': 'audioVolume','command': 'setVolume','arguments': "
+            volume = int(argument * self._max_volume)
+            API_COMMAND_ARG = "[{}]}}]}}".format(volume)
+            API_FULL = API_COMMAND_DATA + API_COMMAND_ARG
+            cmdurl = requests.post(api_command, data=API_FULL, headers=request_headers)
+        elif cmdtype == "stepvolume":  # steps volume up or down
+            if argument == "up":
+                API_COMMAND_DATA = "{'commands':[{'component': 'main','capability': 'audioVolume','command': 'volumeUp'}]}"
+                cmdurl = requests.post(
+                    api_command, data=API_COMMAND_DATA, headers=request_headers
+                )
+            else:
+                API_COMMAND_DATA = "{'commands':[{'component': 'main','capability': 'audioVolume','command': 'volumeDown'}]}"
+                cmdurl = requests.post(
+                    api_command, data=API_COMMAND_DATA, headers=request_headers
+                )
+        elif cmdtype == "audiomute":  # mutes audio
+            if self._muted == False:
+                cmdurl = requests.post(
+                    api_command, data=COMMAND_MUTE, headers=request_headers
+                )
+            else:
+                cmdurl = requests.post(
+                    api_command, data=COMMAND_UNMUTE, headers=request_headers
+                )
+        elif cmdtype == "switch_off":  # turns off
+            cmdurl = requests.post(
+                api_command, data=COMMAND_POWER_OFF, headers=request_headers
+            )
+        elif cmdtype == "switch_on":  # turns on
+            cmdurl = requests.post(
+                api_command, data=COMMAND_POWER_ON, headers=request_headers
+            )
+        elif cmdtype == "play":  # play
+            cmdurl = requests.post(
+                api_command, data=COMMAND_PLAY, headers=request_headers
+            )
+        elif cmdtype == "pause":  # pause
+            cmdurl = requests.post(
+                api_command, data=COMMAND_PAUSE, headers=request_headers
+            )
+        elif cmdtype == "selectsource":  # changes source
+            API_COMMAND_DATA = "{'commands':[{'component': 'main','capability': 'mediaInputSource','command': 'setInputSource', 'arguments': "
+            API_COMMAND_ARG = "['{}']}}]}}".format(argument)
+            API_FULL = API_COMMAND_DATA + API_COMMAND_ARG
+            cmdurl = requests.post(api_command, data=API_FULL, headers=request_headers)
+        elif cmdtype == "selectsoundmode":  # changes sound mode
+            API_COMMAND_DATA = "{'commands':[{'component': 'main','capability': 'execute','command': 'execute', 'arguments': ['/sec/networkaudio/soundmode',{'x.com.samsung.networkaudio.soundmode':"
+            API_COMMAND_ARG = "'{}'".format(argument)
+            API_END = "}]}]}"
+            API_FULL = API_COMMAND_DATA + API_COMMAND_ARG + API_END
+            cmdurl = requests.post(api_command, data=API_FULL, headers=request_headers)
+
+        self.async_schedule_update_ha_state()
 
 
-class SmartThingsSoundbarMediaPlayer(MediaPlayerEntity):
+class SoundbarApiSwitch:
+    @staticmethod
+    def device_update(self):
+        request_headers = {"Authorization": "Bearer " + self._api_key}
+        api_device = API_DEVICES + self._device_id
+        api_device_status = api_device + "/components/main/capabilities/execute/status"
+        api_command = api_device + "/commands"
+        API_FULL = "{'commands':[{'component': 'main','capability': 'execute','command': 'execute', 'arguments': ['/sec/networkaudio/advancedaudio']}]}"
+        cmdurl = requests.post(api_command, data=API_FULL, headers=request_headers)
+        resp = requests.get(api_device_status, headers=request_headers)
+        data = resp.json()
 
-    def __init__(self, name, api_key, device_id, max_volume):
-        self._name = name
-        self._device_id = device_id
-        self._api_key = api_key
-        self._max_volume = max_volume
-        self._volume = 1
-        self._muted = False
-        self._playing = True
-        self._state = "on"
-        self._source = ""
-        self._source_list = []
-        self._sound_mode = "standard"
-        self._sound_mode_list = []
-        self._media_title = ""
+        if self._mode == "night_mode":
+            if (
+                data["data"]["value"]["payload"]["x.com.samsung.networkaudio.nightmode"]
+                == 1
+            ):
+                self._state = STATE_ON
+            else:
+                self._state = STATE_OFF
+        elif self._mode == "bass_boost":
+            if (
+                data["data"]["value"]["payload"]["x.com.samsung.networkaudio.bassboost"]
+                == 1
+            ):
+                self._state = STATE_ON
+            else:
+                self._state = STATE_OFF
+        elif self._mode == "voice_amplifier":
+            if (
+                data["data"]["value"]["payload"][
+                    "x.com.samsung.networkaudio.voiceamplifier"
+                ]
+                == 1
+            ):
+                self._state = STATE_ON
+            else:
+                self._state = STATE_OFF
 
-    def update(self):
-        SoundbarApi.device_update(self)
+    @staticmethod
+    def send_command(self, argument, cmdtype):
+        request_headers = {"Authorization": "Bearer " + self._api_key}
+        device_id = self._device_id
+        api_device = API_DEVICES + device_id
+        api_command = api_device + "/commands"
+        API_COMMAND_DATA = "{'commands':[{'component': 'main','capability': 'execute','command': 'execute','arguments': ['/sec/networkaudio/advancedaudio',"
 
-    def turn_off(self):
-        arg = ""
-        cmdtype = "switch_off"
-        SoundbarApi.send_command(self, arg, cmdtype)
+        if self._mode == "night_mode":
+            if cmdtype == "switch_off":  # turns off nightmode
+                API_COMMAND_ARG = "{'x.com.samsung.networkaudio.nightmode': 0 }]}]}"
+                API_FULL = API_COMMAND_DATA + API_COMMAND_ARG
+                cmdurl = requests.post(
+                    api_command, data=API_FULL, headers=request_headers
+                )
+            elif cmdtype == "switch_on":  # turns on nightmode
+                API_COMMAND_ARG = "{'x.com.samsung.networkaudio.nightmode': 1 }]}]}"
+                API_FULL = API_COMMAND_DATA + API_COMMAND_ARG
+                cmdurl = requests.post(
+                    api_command, data=API_FULL, headers=request_headers
+                )
+        elif self._mode == "bass_boost":
+            if cmdtype == "switch_off":  # turns off bassboost
+                API_COMMAND_ARG = "{'x.com.samsung.networkaudio.bassboost': 0 }]}]}"
+                API_FULL = API_COMMAND_DATA + API_COMMAND_ARG
+                cmdurl = requests.post(
+                    api_command, data=API_FULL, headers=request_headers
+                )
+            elif cmdtype == "switch_on":  # turns on bassboost
+                API_COMMAND_ARG = "{'x.com.samsung.networkaudio.bassboost': 1 }]}]}"
+                API_FULL = API_COMMAND_DATA + API_COMMAND_ARG
+                cmdurl = requests.post(
+                    api_command, data=API_FULL, headers=request_headers
+                )
+        elif self._mode == "voice_amplifier":
+            if cmdtype == "switch_off":  # turns off voiceamplifier
+                API_COMMAND_ARG = (
+                    "{'x.com.samsung.networkaudio.voiceamplifier': 0 }]}]}"
+                )
+                API_FULL = API_COMMAND_DATA + API_COMMAND_ARG
+                cmdurl = requests.post(
+                    api_command, data=API_FULL, headers=request_headers
+                )
+            elif cmdtype == "switch_on":  # turns on voiceamplifier
+                API_COMMAND_ARG = (
+                    "{'x.com.samsung.networkaudio.voiceamplifier': 1 }]}]}"
+                )
+                API_FULL = API_COMMAND_DATA + API_COMMAND_ARG
+                cmdurl = requests.post(
+                    api_command, data=API_FULL, headers=request_headers
+                )
 
-    def turn_on(self):
-        arg = ""
-        cmdtype = "switch_on"
-        SoundbarApi.send_command(self, arg, cmdtype)
-
-    def set_volume_level(self, arg, cmdtype="setvolume"):
-        SoundbarApi.send_command(self, arg, cmdtype)
-
-    def mute_volume(self, mute, cmdtype="audiomute"):
-        SoundbarApi.send_command(self, mute, cmdtype)
-
-    def volume_up(self, cmdtype="stepvolume"):
-        arg = "up"
-        SoundbarApi.send_command(self, arg, cmdtype)
-
-    def volume_down(self, cmdtype="stepvolume"):
-        arg = ""
-        SoundbarApi.send_command(self, arg, cmdtype)
-
-    def select_source(self, source, cmdtype="selectsource"):
-        SoundbarApi.send_command(self, source, cmdtype)
-
-    def select_sound_mode(self, source, cmdtype="selectsoundmode"):
-        SoundbarApi.send_command(self, source, cmdtype)
-
-    @property
-    def device_class(self):
-        return DEVICE_CLASS_SPEAKER
-
-    @property
-    def supported_features(self):
-        return SUPPORT_SMARTTHINGS_SOUNDBAR
-
-    @property
-    def name(self):
-        return self._name
-
-    @property
-    def media_title(self):
-        return self._media_title
-
-    def media_play(self):
-        arg = ""
-        cmdtype = "play"
-        SoundbarApi.send_command(self, arg, cmdtype)
-
-    def media_pause(self):
-        arg = ""
-        cmdtype = "pause"
-        SoundbarApi.send_command(self, arg, cmdtype)
-
-    @property
-    def state(self):
-        return self._state
-
-    @property
-    def is_volume_muted(self):
-        return self._muted
-
-    @property
-    def volume_level(self):
-        return self._volume
-
-    @property
-    def source(self):
-        return self._source
-
-    @property
-    def source_list(self):
-        return self._source_list
-
-    @property
-    def sound_mode(self):
-        return self._sound_mode
-
-    @property
-    def sound_mode_list(self):
-        return self._sound_mode_list
+        self.async_schedule_update_ha_state()
