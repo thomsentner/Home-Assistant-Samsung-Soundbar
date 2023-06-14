@@ -1,6 +1,6 @@
 {
   "name": "SmartThings Soundbar",
-  "domains": ["media_player"],
+  "domains": ["media_player","switch"],
   "render_readme": true,
   "zip_release": true,
   "filename": "smartthings_soundbar.zip"
