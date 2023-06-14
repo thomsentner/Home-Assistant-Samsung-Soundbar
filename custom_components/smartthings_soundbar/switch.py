@@ -21,7 +21,7 @@ from homeassistant.util import Throttle
 _LOGGER = logging.getLogger(__name__)
 
 # VERSION
-VERSION = "2.2.1"
+VERSION = "2.1"
 
 # Dependencies
 DEPENDENCIES = ["soundbar"]

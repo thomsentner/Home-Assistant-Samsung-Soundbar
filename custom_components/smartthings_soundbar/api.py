@@ -1,5 +1,5 @@
 import json
-
+import time
 import requests
 from homeassistant.const import (
     STATE_IDLE,
@@ -36,7 +36,6 @@ COMMAND_FAST_FORWARD = "{'commands':[{'component': 'main','capability': 'mediaPl
 CONTROLABLE_SOURCES = ["bluetooth", "wifi"]
 
 
-
 class SoundbarApi:
     @staticmethod
     def device_update(self):
@@ -46,79 +45,83 @@ class SoundbarApi:
         api_command = api_device + "/commands"
         try:
             cmdurl = requests.post(
-                api_command,
-                data=COMMAND_REFRESH,
-                headers=request_headers
+                api_command, data=COMMAND_REFRESH, headers=request_headers
             )
-            resp = requests.get(
-                api_device_status, headers=request_headers,
-            )
+            time.sleep(0.2)
+            resp = requests.get(api_device_status, headers=request_headers)
 
         except requests.exceptions.RequestException as e:
-            self._state = STATE_IDLE
+            #            self._state = STATE_IDLE
             return e
 
-        data = resp.json()
-        device_volume = data["main"]["volume"]["value"]
-        device_volume = min(int(device_volume) / self._max_volume, 1)
-        switch_state = data["main"]["switch"]["value"]
-        playback_state = data["main"]["playbackStatus"]["value"]
-        device_source = data["main"]["inputSource"]["value"]
-        device_all_sources = json.loads(data["main"]["supportedInputSources"]["value"])
-        device_muted = data["main"]["mute"]["value"] != "unmuted"
+        try:
+            data = resp.json()
+            device_volume = data["main"]["volume"]["value"]
+            device_volume = min(int(device_volume) / self._max_volume, 1)
+            switch_state = data["main"]["switch"]["value"]
+            playback_state = data["main"]["playbackStatus"]["value"]
+            device_source = data["main"]["inputSource"]["value"]
+            device_all_sources = json.loads(
+                data["main"]["supportedInputSources"]["value"]
+            )
+            device_muted = data["main"]["mute"]["value"] != "unmuted"
 
-        if switch_state == "on":
-            if device_source in CONTROLABLE_SOURCES:
-                if playback_state == "playing":
-                    self._state = STATE_PLAYING
-                elif playback_state == "paused":
-                    self._state = STATE_PAUSED
+            if switch_state == "on":
+                if device_source in CONTROLABLE_SOURCES:
+                    if playback_state == "playing":
+                        self._state = STATE_PLAYING
+                    elif playback_state == "paused":
+                        self._state = STATE_PAUSED
+                    else:
+                        self._state = STATE_ON
                 else:
                     self._state = STATE_ON
             else:
-                self._state = STATE_ON
-        else:
-            self._state = STATE_OFF
-        self._volume = device_volume
-        self._source_list = (
-            device_all_sources
-            if type(device_all_sources) is list
-            else device_all_sources["value"]
-        )
-        self._muted = device_muted
-        self._source = device_source
-        if (
-            self._state in [STATE_PLAYING, STATE_PAUSED]
-            and "trackDescription" in data["main"]
-        ):
-            self._media_title = data["main"]["trackDescription"]["value"]
-        else:
-            self._media_title = None
+                self._state = STATE_OFF
+            self._volume = device_volume
+            self._source_list = (
+                device_all_sources
+                if type(device_all_sources) is list
+                else device_all_sources["value"]
+            )
+            self._muted = device_muted
+            self._source = device_source
+            if (
+                self._state in [STATE_PLAYING, STATE_PAUSED]
+                and "trackDescription" in data["main"]
+            ):
+                self._media_title = data["main"]["trackDescription"]["value"]
+            else:
+                self._media_title = None
 
-        api_device_status = api_device + "/components/main/capabilities/execute/status"
-        API_FULL = "{'commands':[{'component': 'main','capability': 'execute','command': 'execute', 'arguments': ['/sec/networkaudio/soundmode']}]}"
+            api_device_status = (
+                api_device + "/components/main/capabilities/execute/status"
+            )
+            API_FULL = "{'commands':[{'component': 'main','capability': 'execute','command': 'execute', 'arguments': ['/sec/networkaudio/soundmode']}]}"
+        except:
+            return 2
 
         try:
-            cmdurl = requests.post(
-                api_command, data=API_FULL, headers=request_headers
-            )
-            resp = requests.get(
-                api_device_status, headers=request_headers
-            )
+            cmdurl = requests.post(api_command, data=API_FULL, headers=request_headers)
+            time.sleep(0.2)
+            resp = requests.get(api_device_status, headers=request_headers)
 
         except requests.exceptions.RequestException as e:
-            self._state = STATE_IDLE
             return e
 
         data = resp.json()
-        device_soundmode = data["data"]["value"]["payload"][
-            "x.com.samsung.networkaudio.soundmode"
-        ]
-        device_soundmode_list = data["data"]["value"]["payload"][
-            "x.com.samsung.networkaudio.supportedSoundmode"
-        ]
-        self._sound_mode = device_soundmode
-        self._sound_mode_list = device_soundmode_list
+
+        try:
+            device_soundmode = data["data"]["value"]["payload"][
+                "x.com.samsung.networkaudio.soundmode"
+            ]
+            device_soundmode_list = data["data"]["value"]["payload"][
+                "x.com.samsung.networkaudio.supportedSoundmode"
+            ]
+            self._sound_mode = device_soundmode
+            self._sound_mode_list = device_soundmode_list
+        except Exception as error:
+            return error
 
     @staticmethod
     def send_command(self, argument, cmdtype):
@@ -191,36 +194,50 @@ class SoundbarApiSwitch:
         api_device_status = api_device + "/components/main/capabilities/execute/status"
         api_command = api_device + "/commands"
         API_FULL = "{'commands':[{'component': 'main','capability': 'execute','command': 'execute', 'arguments': ['/sec/networkaudio/advancedaudio']}]}"
-        cmdurl = requests.post(api_command, data=API_FULL, headers=request_headers)
-        resp = requests.get(api_device_status, headers=request_headers)
+
+        try:
+            cmdurl = requests.post(api_command, data=API_FULL, headers=request_headers)
+            time.sleep(0.2)
+            resp = requests.get(api_device_status, headers=request_headers)
+
+        except requests.exceptions.RequestException as e:
+            return e
+
         data = resp.json()
 
-        if self._mode == "night_mode":
-            if (
-                data["data"]["value"]["payload"]["x.com.samsung.networkaudio.nightmode"]
-                == 1
-            ):
-                self._state = STATE_ON
-            else:
-                self._state = STATE_OFF
-        elif self._mode == "bass_boost":
-            if (
-                data["data"]["value"]["payload"]["x.com.samsung.networkaudio.bassboost"]
-                == 1
-            ):
-                self._state = STATE_ON
-            else:
-                self._state = STATE_OFF
-        elif self._mode == "voice_amplifier":
-            if (
-                data["data"]["value"]["payload"][
-                    "x.com.samsung.networkaudio.voiceamplifier"
-                ]
-                == 1
-            ):
-                self._state = STATE_ON
-            else:
-                self._state = STATE_OFF
+        try:
+            if self._mode == "night_mode":
+                if (
+                    data["data"]["value"]["payload"][
+                        "x.com.samsung.networkaudio.nightmode"
+                    ]
+                    == 1
+                ):
+                    self._state = STATE_ON
+                else:
+                    self._state = STATE_OFF
+            elif self._mode == "bass_boost":
+                if (
+                    data["data"]["value"]["payload"][
+                        "x.com.samsung.networkaudio.bassboost"
+                    ]
+                    == 1
+                ):
+                    self._state = STATE_ON
+                else:
+                    self._state = STATE_OFF
+            elif self._mode == "voice_amplifier":
+                if (
+                    data["data"]["value"]["payload"][
+                        "x.com.samsung.networkaudio.voiceamplifier"
+                    ]
+                    == 1
+                ):
+                    self._state = STATE_ON
+                else:
+                    self._state = STATE_OFF
+        except Exception as error:
+            return error
 
     @staticmethod
     def send_command(self, argument, cmdtype):

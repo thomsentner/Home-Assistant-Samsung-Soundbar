@@ -98,7 +98,7 @@ This integration was confirmed to work with following devices:
 - Samsung HW-S61T
 - Samsung HW-Q930B
 
-[latest_release]: https://github.com/PiotrMachowski/Home-Assistant-custom-components-SmartThings-Soundbar/releases/latest
+[latest_release]: https://github.com/ThierryBourbon/Home-Assistant-custom-components-SmartThings-Soundbar/releases/tag/latest_release
 [releases_shield]: https://img.shields.io/github/release/PiotrMachowski/Home-Assistant-custom-components-SmartThings-Soundbar.svg?style=popout
 [releases]: https://github.com/PiotrMachowski/Home-Assistant-custom-components-SmartThings-Soundbar/releases
 [downloads_total_shield]: https://img.shields.io/github/downloads/PiotrMachowski/Home-Assistant-custom-components-SmartThings-Soundbar/total
