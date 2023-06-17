@@ -99,8 +99,8 @@ This integration was confirmed to work with following devices:
 - Samsung HW-Q930B
 
 [latest_release]: https://github.com/ThierryBourbon/Home-Assistant-custom-components-SmartThings-Soundbar/releases/tag/latest_release
-[releases_shield]: https://img.shields.io/github/release/PiotrMachowski/Home-Assistant-custom-components-SmartThings-Soundbar.svg?style=popout
-[releases]: https://github.com/PiotrMachowski/Home-Assistant-custom-components-SmartThings-Soundbar/releases
+[releases_shield]: https://img.shields.io/github/release/ThierryBourbon/Home-Assistant-custom-components-SmartThings-Soundbar.svg?style=popout
+[releases]: https://github.com/ThierryBourbon/Home-Assistant-custom-components-SmartThings-Soundbar/releases
 [downloads_total_shield]: https://img.shields.io/github/downloads/PiotrMachowski/Home-Assistant-custom-components-SmartThings-Soundbar/total
 [buy_me_a_coffee_shield]: https://img.shields.io/static/v1.svg?label=%20&message=Buy%20me%20a%20coffee&color=6f4e37&logo=buy%20me%20a%20coffee&logoColor=white
 [paypal_me_shield]: https://img.shields.io/static/v1.svg?label=%20&message=PayPal.Me&logo=paypal
