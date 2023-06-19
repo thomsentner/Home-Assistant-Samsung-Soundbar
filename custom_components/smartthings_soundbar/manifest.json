@@ -1,11 +1,11 @@
 {
   "domain": "smartthings_soundbar",
   "name": "SmartThings Soundbar",
+  "codeowners": ["@PiotrMachowski","@mimale","@thierryBourbon"],
   "documentation": "https://github.com/thierryBourbon/Home-Assistant-custom-components-SmartThings-Soundbar",
+  "iot_class": "cloud_polling",
   "issue_tracker": "https://github.com/thierryBourbon/Home-Assistant-custom-components-SmartThings-Soundbar/issues",
   "requirements": [],
-  "dependencies": [],
-  "codeowners": ["@PiotrMachowski","@mimale","@thierryBourbon"],
-  "version": "v1.1.0",
-  "iot_class": "cloud_polling"
+  "version": "v1.1.0"
+
 }
