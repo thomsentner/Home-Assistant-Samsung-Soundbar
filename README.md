@@ -1,6 +1,24 @@
+[![HACS Custom][hacs_shield]][hacs]
 [![GitHub Latest Release][releases_shield]][latest_release]
 [![GitHub All Releases][downloads_total_shield]][releases]
+[![Buy me a coffee][buy_me_a_coffee_shield]][buy_me_a_coffee]
 [![PayPal.Me][paypal_me_shield]][paypal_me]
+
+[hacs_shield]: https://img.shields.io/static/v1.svg?label=HACS&message=Custom&style=popout&color=orange&labelColor=41bdf5&logo=HomeAssistantCommunityStore&logoColor=white
+[hacs]: https://hacs.xyz/docs/faq/custom_repositories
+
+[latest_release]: https://github.com/ThierryBourbon/Home-Assistant-custom-components-SmartThings-Soundbar/releases/tag/latest_release
+[releases_shield]: https://img.shields.io/github/release/ThierryBourbon/Home-Assistant-custom-components-SmartThings-Soundbar.svg?style=popout
+
+[releases]: https://github.com/ThierryBourbon/Home-Assistant-custom-components-SmartThings-Soundbar/releases
+[downloads_total_shield]: https://img.shields.io/github/downloads/ThierryBourbon/Home-Assistant-custom-components-SmartThings-Soundbar/total
+
+[buy_me_a_coffee_shield]: https://img.shields.io/static/v1.svg?label=%20&message=Buy%20me%20a%20coffee&color=6f4e37&logo=buy%20me%20a%20coffee&logoColor=white
+[buy_me_a_coffee]: https://www.buymeacoffee.com/thierrybourbon
+
+
+[paypal_me_shield]: https://img.shields.io/static/v1.svg?label=%20&message=PayPal.Me&logo=paypal
+[paypal_me]: https://paypal.me/thierryBourbon
 
 # SmartThings Soundbar
 
@@ -18,6 +36,7 @@ Adds support for SmartThings enabled Soundbar
 - Show current state: on/off/playing/paused/idle
 - Show if muted/unmuted
 - Show current source
+- `Extra switchs: Voice_amplifier, Bass Boost, Night Mode`
 
 ## Configuration options
 
@@ -34,8 +53,8 @@ Adds support for SmartThings enabled Soundbar
 smartthings_soundbar:
   devices:
     - name: Barre de son
-      api_key: b13391c7-8cef-4518-a58e-393b079b4bf5
-      device_id: da93855b-45cd-6ca0-86d6-2c9570165eb8
+      api_key: b13391c7-8cef-4518-a58e-393b0xxxxxxx
+      device_id: da93855b-45cd-6ca0-86d6-2c957xxxxxx
       max_volume: 100
 ```
 
@@ -62,6 +81,12 @@ Go [here](https://graph-eu01-euwest1.api.smartthings.com/device/list) for your d
 > https://graph-eu01-euwest1.api.smartthings.com/device/show/XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXX
 
 ## Installation
+
+### Using [HACS](https://hacs.xyz/) (recommended)
+
+This integration can be added to HACS as a [custom repository](https://hacs.xyz/docs/faq/custom_repositories):
+* URL: `https://github.com/ThierryBourbon/Home-Assistant-Samsung-Soundbar
+* Category: `Integration`
 
 ### Manual
 
@@ -97,12 +122,3 @@ This integration was confirmed to work with following devices:
 - Samsung HW-S60T
 - Samsung HW-S61T
 - Samsung HW-Q930B
-
-[latest_release]: https://github.com/ThierryBourbon/Home-Assistant-custom-components-SmartThings-Soundbar/releases/tag/latest_release
-[releases_shield]: https://img.shields.io/github/release/ThierryBourbon/Home-Assistant-custom-components-SmartThings-Soundbar.svg?style=popout
-[releases]: https://github.com/ThierryBourbon/Home-Assistant-custom-components-SmartThings-Soundbar/releases
-[downloads_total_shield]: https://img.shields.io/github/downloads/ThierryBourbon/Home-Assistant-custom-components-SmartThings-Soundbar/total
-[buy_me_a_coffee_shield]: https://img.shields.io/static/v1.svg?label=%20&message=Buy%20me%20a%20coffee&color=6f4e37&logo=buy%20me%20a%20coffee&logoColor=white
-[paypal_me_shield]: https://img.shields.io/static/v1.svg?label=%20&message=PayPal.Me&logo=paypal
-[paypal_me]: https://paypal.me/thierryBourbon
-
