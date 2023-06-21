@@ -79,7 +79,11 @@ composed of a media player and 3 switches
 
 You can group them on an entities card
 
-![Alt text](entities_card.png)
+![Alt text]()
+
+
+
+
 
 ## Getting API key and device id
 
