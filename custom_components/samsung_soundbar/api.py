@@ -193,19 +193,17 @@ class SoundbarApiSwitch:
         api_device = API_DEVICES + self._device_id
         api_device_status = api_device + "/components/main/capabilities/execute/status"
         api_command = api_device + "/commands"
-        API_FULL = "{'commands':[{'component': 'main','capability': 'execute','command': 'execute', 'arguments': ['/sec/networkaudio/advancedaudio']}]}"
+        api_full = "{'commands':[{'component': 'main','capability': 'execute','command': 'execute', 'arguments': ['/sec/networkaudio/advancedaudio']}]}"
 
         try:
-            cmdurl = requests.post(api_command, data=API_FULL, headers=request_headers)
+            cmdurl = requests.post(api_command, data=api_full, headers=request_headers)
             time.sleep(0.2)
             resp = requests.get(api_device_status, headers=request_headers)
 
         except requests.exceptions.RequestException as e:
             return e
-
-        data = resp.json()
-
         try:
+            data = resp.json()
             if self._mode == "night_mode":
                 if (
                     data["data"]["value"]["payload"][
