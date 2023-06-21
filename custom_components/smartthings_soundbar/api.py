@@ -9,7 +9,7 @@ from homeassistant.const import (
     STATE_PLAYING,
 )
 
-API_BASEURL = "https://api.smartthings.com/v1"
+API_BASEURL = "https://api.samsung.com/v1"
 API_DEVICES = API_BASEURL + "/devices/"
 
 COMMAND_POWER_ON = (

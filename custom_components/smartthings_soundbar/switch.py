@@ -1,4 +1,4 @@
-"""SmartThings Soundbar Switchs    """
+"""samsung Soundbar Switchs    """
 import logging
 import asyncio
 import voluptuous as vol
@@ -10,7 +10,7 @@ from .api import SoundbarApiSwitch
 
 
 # From homeassistant
-from custom_components.smartthings_soundbar import _LOGGER, DOMAIN as SOUNDBAR_DOMAIN
+from custom_components.samsung_soundbar import _LOGGER, DOMAIN as SOUNDBAR_DOMAIN
 from homeassistant.components.switch import (
     SwitchEntity,
 )

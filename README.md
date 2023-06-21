@@ -7,11 +7,11 @@
 [hacs_shield]: https://img.shields.io/static/v1.svg?label=HACS&message=Custom&style=popout&color=orange&labelColor=41bdf5&logo=HomeAssistantCommunityStore&logoColor=white
 [hacs]: https://hacs.xyz/docs/faq/custom_repositories
 
-[latest_release]: https://github.com/ThierryBourbon/Home-Assistant-custom-components-SmartThings-Soundbar/releases/tag/latest_release
-[releases_shield]: https://img.shields.io/github/release/ThierryBourbon/Home-Assistant-custom-components-SmartThings-Soundbar.svg?style=popout
+[latest_release]: https://github.com/ThierryBourbon/Home-Assistant-custom-components-samsung-Soundbar/releases/tag/latest_release
+[releases_shield]: https://img.shields.io/github/release/ThierryBourbon/Home-Assistant-custom-components-samsung-Soundbar.svg?style=popout
 
-[releases]: https://github.com/ThierryBourbon/Home-Assistant-custom-components-SmartThings-Soundbar/releases
-[downloads_total_shield]: https://img.shields.io/github/downloads/ThierryBourbon/Home-Assistant-custom-components-SmartThings-Soundbar/total
+[releases]: https://github.com/ThierryBourbon/Home-Assistant-custom-components-samsung-Soundbar/releases
+[downloads_total_shield]: https://img.shields.io/github/downloads/ThierryBourbon/Home-Assistant-custom-components-samsung-Soundbar/total
 
 [buy_me_a_coffee_shield]: https://img.shields.io/static/v1.svg?label=%20&message=Buy%20me%20a%20coffee&color=6f4e37&logo=buy%20me%20a%20coffee&logoColor=white
 [buy_me_a_coffee]: https://www.buymeacoffee.com/thierrybourbon
@@ -20,9 +20,9 @@
 [paypal_me_shield]: https://img.shields.io/static/v1.svg?label=%20&message=PayPal.Me&logo=paypal
 [paypal_me]: https://paypal.me/thierryBourbon
 
-# SmartThings Soundbar
+# samsung Soundbar
 
-Adds support for SmartThings enabled Soundbar
+Adds support for samsung enabled Soundbar
 
 ## Features
 
@@ -42,20 +42,31 @@ Adds support for SmartThings enabled Soundbar
 
 | Key          | Type               | Required | Default                | Description                                                                                                                                               |
 | -------------- | -------------------- | ---------- | ------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `name`       | `string`           | `False`  | `SmartThings Soundbar` | Name of soundbar                                                                                                                                          |
-| `api_key`    | `string`           | `True`   | -                      | SmartThings API key (see:[here](https://github.com/PiotrMachowski/Home-Assistant-custom-components-SmartThings-Soundbar#getting-api-key-and-device-id))   |
-| `device_id`  | `string`           | `True`   | -                      | SmartThings device id (see:[here](https://github.com/PiotrMachowski/Home-Assistant-custom-components-SmartThings-Soundbar#getting-api-key-and-device-id)) |
+| `name`       | `string`           | `False`  | `samsung Soundbar` | Name of soundbar                                                                                                                                          |
+| `api_key`    | `string`           | `True`   | -                      | samsung API key (see:[here](https://github.com/PiotrMachowski/Home-Assistant-custom-components-samsung-Soundbar#getting-api-key-and-device-id))   |
+| `device_id`  | `string`           | `True`   | -                      | samsung device id (see:[here](https://github.com/PiotrMachowski/Home-Assistant-custom-components-samsung-Soundbar#getting-api-key-and-device-id)) |
 | `max_volume` | `positive integer` | `False`  | 100                    | Volume level that will be used as a maximum level in Home Assistant                                                                                       |
 
 ## Examples usage
 
 ```yaml
-smartthings_soundbar:
+samsung_soundbar:
   devices:
     - name: Barre de son
       api_key: b13391c7-8cef-4518-a58e-393b0xxxxxxx
       device_id: da93855b-45cd-6ca0-86d6-2c957xxxxxx
       max_volume: 100
+```
+If you want you can customise switch names to your language
+```yaml
+homeassistant:
+  customize:
+    switch.barre_de_son_night_mode:
+      friendly_name: "Mode Nuit"
+    switch.barre_de_son_bass_boost:
+      friendly_name: "Amélioration des Basses"
+    switch.barre_de_son_voice_amplifier:
+      friendly_name: "Amélioration Vocale"
 ```
 
 ## Device
@@ -72,13 +83,13 @@ You can group them on an entities card
 
 ## Getting API key and device id
 
-Make sure your device is connected to yout SmartThings account.
+Make sure your device is connected to yout samsung account.
 
-Obtain an API key from https://account.smartthings.com/tokens
+Obtain an API key from https://account.samsung.com/tokens
 
-Go [here](https://graph-eu01-euwest1.api.smartthings.com/device/list) for your device id for each device. Click on the name of your device and the device id will be in the URL
+Go [here](https://graph-eu01-euwest1.api.samsung.com/device/list) for your device id for each device. Click on the name of your device and the device id will be in the URL
 
-> https://graph-eu01-euwest1.api.smartthings.com/device/show/XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXX
+> https://graph-eu01-euwest1.api.samsung.com/device/show/XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXX
 
 ## Installation
 
@@ -90,14 +101,14 @@ This integration can be added to HACS as a [custom repository](https://hacs.xyz/
 
 ### Manual
 
-To install this integration manually you have to download [*smartthings_soundbar.zip*](https://github.com/ThierryBourbon/Home-Assistant-custom-components-SmartThings-Soundbar/blob/master/smartthings_soundbar.zip) and extract its contents to `config/custom_components/smartthings_soundbar` directory:
+To install this integration manually you have to download [*samsung_soundbar.zip*](https://github.com/ThierryBourbon/Home-Assistant-custom-components-samsung-Soundbar/blob/master/samsung_soundbar.zip) and extract its contents to `config/custom_components/samsung_soundbar` directory:
 
 ```bash
-mkdir -p custom_components/smartthings_soundbar
-cd custom_components/smartthings_soundbar
-wget https://github.com/ThierryBourbon/Home-Assistant-custom-components-SmartThings-Soundbar/blob/master/smartthings_soundbar.zip
-unzip smartthings_soundbar.zip
-rm smartthings_soundbar.zip
+mkdir -p custom_components/samsung_soundbar
+cd custom_components/samsung_soundbar
+wget https://github.com/ThierryBourbon/Home-Assistant-custom-components-samsung-Soundbar/blob/master/samsung_soundbar.zip
+unzip samsung_soundbar.zip
+rm samsung_soundbar.zip
 ```
 
 ### Known problems

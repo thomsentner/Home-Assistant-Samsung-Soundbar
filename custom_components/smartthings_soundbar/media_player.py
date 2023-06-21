@@ -1,4 +1,4 @@
-"""SmartThings Soundbar MediaPlayer    """
+"""samsung Soundbar MediaPlayer    """
 import logging
 import asyncio
 import voluptuous as vol
@@ -9,7 +9,7 @@ from datetime import timedelta
 from .api import SoundbarApi
 
 # From homeassistant
-from custom_components.smartthings_soundbar import _LOGGER, DOMAIN as SOUNDBAR_DOMAIN
+from custom_components.samsung_soundbar import _LOGGER, DOMAIN as SOUNDBAR_DOMAIN
 from homeassistant.components.media_player.const import (
     SUPPORT_PAUSE,
     SUPPORT_PLAY,
@@ -39,7 +39,7 @@ DEPENDENCIES = ["soundbar"]
 MIN_TIME_BETWEEN_SCANS = timedelta(seconds=10)
 MIN_TIME_BETWEEN_FORCED_SCANS = timedelta(seconds=5)
 
-SUPPORT_SMARTTHINGS_SOUNDBAR = (
+SUPPORT_samsung_SOUNDBAR = (
     SUPPORT_PAUSE
     | SUPPORT_VOLUME_STEP
     | SUPPORT_VOLUME_MUTE
@@ -62,15 +62,15 @@ async def async_setup_platform(hass, config, async_add_entities, discovery_info=
     for device in soundbar_list:
         _LOGGER.debug("Configured a new SoundbarMediaPlayer %s", device.name)
 
-        devices.append(SmartThingsSoundbarMediaPlayer(device))
+        devices.append(samsungSoundbarMediaPlayer(device))
 
     async_add_entities(devices, update_before_add=True)
 
 
-# Smartthings Soundbar Media Player Devic
+# samsung Soundbar Media Player Devic
 
 
-class SmartThingsSoundbarMediaPlayer(MediaPlayerEntity):
+class samsungSoundbarMediaPlayer(MediaPlayerEntity):
     def __init__(self, SoundbarMediaPlayerEntity):
         """Initialize the Soundbar device."""
         self._name = SoundbarMediaPlayerEntity.name
@@ -138,7 +138,7 @@ class SmartThingsSoundbarMediaPlayer(MediaPlayerEntity):
 
     @property
     def supported_features(self):
-        return SUPPORT_SMARTTHINGS_SOUNDBAR
+        return SUPPORT_samsung_SOUNDBAR
 
     @property
     def name(self):

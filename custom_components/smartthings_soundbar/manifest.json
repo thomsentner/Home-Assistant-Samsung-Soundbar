@@ -1,10 +1,10 @@
 {
-  "domain": "smartthings_soundbar",
-  "name": "SmartThings Soundbar",
+  "domain": "samsung_soundbar",
+  "name": "samsung Soundbar",
   "codeowners": ["@PiotrMachowski","@mimale","@thierryBourbon"],
-  "documentation": "https://github.com/thierryBourbon/Home-Assistant-custom-components-SmartThings-Soundbar",
+  "documentation": "https://github.com/thierryBourbon/Home-Assistant-custom-components-samsung-Soundbar",
   "iot_class": "cloud_polling",
-  "issue_tracker": "https://github.com/thierryBourbon/Home-Assistant-custom-components-SmartThings-Soundbar/issues",
+  "issue_tracker": "https://github.com/thierryBourbon/Home-Assistant-custom-components-samsung-Soundbar/issues",
   "requirements": [],
   "version": "v1.1.0"
 
