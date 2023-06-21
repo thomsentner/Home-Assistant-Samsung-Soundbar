@@ -9,7 +9,7 @@ from homeassistant.const import (
     STATE_PLAYING,
 )
 
-API_BASEURL = "https://api.samsung.com/v1"
+API_BASEURL = "https://api.smartthings.com/v1"
 API_DEVICES = API_BASEURL + "/devices/"
 
 COMMAND_POWER_ON = (
@@ -113,10 +113,10 @@ class SoundbarApi:
 
         try:
             device_soundmode = data["data"]["value"]["payload"][
-                "x.com.samsung.networkaudio.soundmode"
+                "x.com.smartthings.networkaudio.soundmode"
             ]
             device_soundmode_list = data["data"]["value"]["payload"][
-                "x.com.samsung.networkaudio.supportedSoundmode"
+                "x.com.smartthings.networkaudio.supportedSoundmode"
             ]
             self._sound_mode = device_soundmode
             self._sound_mode_list = device_soundmode_list
@@ -177,7 +177,7 @@ class SoundbarApi:
             API_FULL = API_COMMAND_DATA + API_COMMAND_ARG
             cmdurl = requests.post(api_command, data=API_FULL, headers=request_headers)
         elif cmdtype == "selectsoundmode":  # changes sound mode
-            API_COMMAND_DATA = "{'commands':[{'component': 'main','capability': 'execute','command': 'execute', 'arguments': ['/sec/networkaudio/soundmode',{'x.com.samsung.networkaudio.soundmode':"
+            API_COMMAND_DATA = "{'commands':[{'component': 'main','capability': 'execute','command': 'execute', 'arguments': ['/sec/networkaudio/soundmode',{'x.com.smartthings.networkaudio.soundmode':"
             API_COMMAND_ARG = "'{}'".format(argument)
             API_END = "}]}]}"
             API_FULL = API_COMMAND_DATA + API_COMMAND_ARG + API_END
@@ -207,7 +207,7 @@ class SoundbarApiSwitch:
             if self._mode == "night_mode":
                 if (
                     data["data"]["value"]["payload"][
-                        "x.com.samsung.networkaudio.nightmode"
+                        "x.com.smartthings.networkaudio.nightmode"
                     ]
                     == 1
                 ):
@@ -217,7 +217,7 @@ class SoundbarApiSwitch:
             elif self._mode == "bass_boost":
                 if (
                     data["data"]["value"]["payload"][
-                        "x.com.samsung.networkaudio.bassboost"
+                        "x.com.smartthings.networkaudio.bassboost"
                     ]
                     == 1
                 ):
@@ -227,7 +227,7 @@ class SoundbarApiSwitch:
             elif self._mode == "voice_amplifier":
                 if (
                     data["data"]["value"]["payload"][
-                        "x.com.samsung.networkaudio.voiceamplifier"
+                        "x.com.smartthings.networkaudio.voiceamplifier"
                     ]
                     == 1
                 ):
@@ -247,26 +247,26 @@ class SoundbarApiSwitch:
 
         if self._mode == "night_mode":
             if cmdtype == "switch_off":  # turns off nightmode
-                API_COMMAND_ARG = "{'x.com.samsung.networkaudio.nightmode': 0 }]}]}"
+                API_COMMAND_ARG = "{'x.com.smartthings.networkaudio.nightmode': 0 }]}]}"
                 API_FULL = API_COMMAND_DATA + API_COMMAND_ARG
                 cmdurl = requests.post(
                     api_command, data=API_FULL, headers=request_headers
                 )
             elif cmdtype == "switch_on":  # turns on nightmode
-                API_COMMAND_ARG = "{'x.com.samsung.networkaudio.nightmode': 1 }]}]}"
+                API_COMMAND_ARG = "{'x.com.smartthings.networkaudio.nightmode': 1 }]}]}"
                 API_FULL = API_COMMAND_DATA + API_COMMAND_ARG
                 cmdurl = requests.post(
                     api_command, data=API_FULL, headers=request_headers
                 )
         elif self._mode == "bass_boost":
             if cmdtype == "switch_off":  # turns off bassboost
-                API_COMMAND_ARG = "{'x.com.samsung.networkaudio.bassboost': 0 }]}]}"
+                API_COMMAND_ARG = "{'x.com.smartthings.networkaudio.bassboost': 0 }]}]}"
                 API_FULL = API_COMMAND_DATA + API_COMMAND_ARG
                 cmdurl = requests.post(
                     api_command, data=API_FULL, headers=request_headers
                 )
             elif cmdtype == "switch_on":  # turns on bassboost
-                API_COMMAND_ARG = "{'x.com.samsung.networkaudio.bassboost': 1 }]}]}"
+                API_COMMAND_ARG = "{'x.com.smartthings.networkaudio.bassboost': 1 }]}]}"
                 API_FULL = API_COMMAND_DATA + API_COMMAND_ARG
                 cmdurl = requests.post(
                     api_command, data=API_FULL, headers=request_headers
@@ -274,7 +274,7 @@ class SoundbarApiSwitch:
         elif self._mode == "voice_amplifier":
             if cmdtype == "switch_off":  # turns off voiceamplifier
                 API_COMMAND_ARG = (
-                    "{'x.com.samsung.networkaudio.voiceamplifier': 0 }]}]}"
+                    "{'x.com.smartthings.networkaudio.voiceamplifier': 0 }]}]}"
                 )
                 API_FULL = API_COMMAND_DATA + API_COMMAND_ARG
                 cmdurl = requests.post(
@@ -282,7 +282,7 @@ class SoundbarApiSwitch:
                 )
             elif cmdtype == "switch_on":  # turns on voiceamplifier
                 API_COMMAND_ARG = (
-                    "{'x.com.samsung.networkaudio.voiceamplifier': 1 }]}]}"
+                    "{'x.com.smartthings.networkaudio.voiceamplifier': 1 }]}]}"
                 )
                 API_FULL = API_COMMAND_DATA + API_COMMAND_ARG
                 cmdurl = requests.post(
