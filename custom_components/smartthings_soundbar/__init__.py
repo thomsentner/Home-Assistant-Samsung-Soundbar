@@ -1,4 +1,4 @@
-"""SmartThings Soundbar"""
+"""samsung Soundbar"""
 import logging
 import voluptuous as vol
 
@@ -12,7 +12,7 @@ REQUIREMENTS = ['beautifulsoup4==4.6.3']
 _LOGGER = logging.getLogger(__name__)
 
 # DOMAIN
-DOMAIN = 'smartthings_soundbar'
+DOMAIN = 'samsung_soundbar'
 
 # Supported domains
 SUPPORTED_DOMAINS = ['media_player','switch']
@@ -22,7 +22,7 @@ from homeassistant.helpers import config_validation as cv, discovery
 from homeassistant.helpers.entity import Entity
 
 # DEFAULTS
-DEFAULT_NAME = "SmartThings Soundbar Test"
+DEFAULT_NAME = "samsung Soundbar Test"
 CONF_MAX_VOLUME = "max_volume"
 
 soundbar_CONFIG = vol.Schema(
@@ -55,7 +55,7 @@ async def async_setup(hass, config):
     if DOMAIN not in hass.data:
         hass.data[DOMAIN] = []
 
-    _LOGGER.info("Initializing Smarttings Soundbar  devices")
+    _LOGGER.info("Initializing Samsung Soundbar  devices")
 
     soundbar_list = []
 
@@ -109,7 +109,7 @@ class SoundbarDevice(Entity):
 
 #    @property
 #    def supported_features(self):
-#        return SUPPORT_SMARTTHINGS_SOUNDBAR
+#        return SUPPORT_samsung_SOUNDBAR
 
     @property
     def name(self):
