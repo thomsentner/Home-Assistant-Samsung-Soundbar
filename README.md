@@ -79,8 +79,8 @@ composed of a media player and 3 switches
 
 You can group them on an entities card
 
-![Alt text]()
 
+![entities_card](https://github.com/ThierryBourbon/Home-Assistant-Samsung-Soundbar/assets/65720627/ca36d296-7669-4fa6-9f3e-7a30757984d4)
 
 
 
