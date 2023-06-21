@@ -62,7 +62,6 @@ class SoundbarSwitch  (SwitchEntity):
         self._name = SoundbarSwitchEntity.name + "_" + mode_courant
         self._device_id = SoundbarSwitchEntity.device_id
         self._api_key = SoundbarSwitchEntity.api_key
-        self._max_volume = SoundbarSwitchEntity.max_volume
         self._state = "off"
 
     # Run when added to HASS TO LOAD SOURCES

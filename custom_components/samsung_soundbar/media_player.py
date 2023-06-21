@@ -62,7 +62,7 @@ async def async_setup_platform(hass, config, async_add_entities, discovery_info=
     for device in soundbar_list:
         _LOGGER.debug("Configured a new SoundbarMediaPlayer %s", device.name)
 
-        devices.append(samsungSoundbarMediaPlayer(device))
+        devices.append(SoundbarMediaPlayer(device))
 
     async_add_entities(devices, update_before_add=True)
 
@@ -70,7 +70,7 @@ async def async_setup_platform(hass, config, async_add_entities, discovery_info=
 # samsung Soundbar Media Player Devic
 
 
-class samsungSoundbarMediaPlayer(MediaPlayerEntity):
+class SoundbarMediaPlayer(MediaPlayerEntity):
     def __init__(self, SoundbarMediaPlayerEntity):
         """Initialize the Soundbar device."""
         self._name = SoundbarMediaPlayerEntity.name
