@@ -8,7 +8,8 @@
 [hacs]: https://hacs.xyz/docs/faq/custom_repositories
 
 [latest_release]: https://github.com/ThierryBourbon/Home-Assistant-Samsung-Soundbar/releases/latest
-[releases_shield]:https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2FThierryBourbon%2FHome-Assistant-Samsung-Soundbar%2F1.2.1%2Fcustom_components%2Fsamsung_soundbar%2Fmanifest.json&query=%24.version
+[releases_shield]:https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2FThierryBourbon%2FHome-Assistant-Samsung-Soundbar%2Fmaster%2Fcustom_components%2Fsamsung_soundbar%2Fmanifest.json&query=%24.version&label=release
+
 
 
 [releases]: https://github.com/ThierryBourbon/Home-Assistant-custom-components-samsung-Soundbar/releases/latest
