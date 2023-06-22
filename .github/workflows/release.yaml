@@ -14,14 +14,14 @@ jobs:
 
       - name: Zip samsung_soundbar dir
         run: |
-          cd /home/runner/work/Home-Assistant-custom-components-samsung-Soundbar/Home-Assistant-custom-components-samsung-Soundbar/custom_components/samsung_soundbar
+          cd /home/runner/work/Home-Assistant-Samsung-Soundbar/Home-Assistant-Samsung-Soundbar/custom_components/samsung_soundbar
           zip samsung_soundbar.zip -r ./
 
       - name: Upload zip to release
         uses: svenstaro/upload-release-action@v1-release
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: /home/runner/work/Home-Assistant-custom-components-samsung-Soundbar/Home-Assistant-custom-components-samsung-Soundbar/custom_components/samsung_soundbar/samsung_soundbar.zip
+          file: /home/runner/work/Home-Assistant-Samsung-Soundbar/Home-Assistant-Samsung-Soundbar/custom_components/samsung_soundbar/samsung_soundbar.zip
           asset_name: samsung_soundbar.zip
           tag: ${{ github.ref }}
           overwrite: true

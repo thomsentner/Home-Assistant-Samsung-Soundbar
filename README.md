@@ -7,10 +7,11 @@
 [hacs_shield]: https://img.shields.io/static/v1.svg?label=HACS&message=Custom&style=popout&color=orange&labelColor=41bdf5&logo=HomeAssistantCommunityStore&logoColor=white
 [hacs]: https://hacs.xyz/docs/faq/custom_repositories
 
-[latest_release]: https://github.com/ThierryBourbon/Home-Assistant-custom-components-samsung-Soundbar/releases/tag/latest_release
-[releases_shield]: https://img.shields.io/github/release/ThierryBourbon/Home-Assistant-custom-components-samsung-Soundbar.svg?style=popout
+[latest_release]: https://github.com/ThierryBourbon/Home-Assistant-Samsung-Soundbar/releases/latest
+[releases_shield]:https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2FThierryBourbon%2FHome-Assistant-Samsung-Soundbar%2F1.2.1%2Fcustom_components%2Fsamsung_soundbar%2Fmanifest.json&query=%24.version
 
-[releases]: https://github.com/ThierryBourbon/Home-Assistant-custom-components-samsung-Soundbar/releases
+
+[releases]: https://github.com/ThierryBourbon/Home-Assistant-custom-components-samsung-Soundbar/releases/latest
 [downloads_total_shield]: https://img.shields.io/github/downloads/ThierryBourbon/Home-Assistant-custom-components-samsung-Soundbar/total
 
 [buy_me_a_coffee_shield]: https://img.shields.io/static/v1.svg?label=%20&message=Buy%20me%20a%20coffee&color=6f4e37&logo=buy%20me%20a%20coffee&logoColor=white
