@@ -2,7 +2,7 @@
 [![GitHub Latest Release][releases_shield]][latest_release]
 [![GitHub All Releases][downloads_total_shield]][releases]
 [![Buy me a coffee][buy_me_a_coffee_shield]][buy_me_a_coffee]
-[![PayPal.Me][paypal_me_shield]][paypal_me]
+
 
 [hacs_shield]: https://img.shields.io/static/v1.svg?label=HACS&message=Custom&style=popout&color=orange&labelColor=41bdf5&logo=HomeAssistantCommunityStore&logoColor=white
 [hacs]: https://hacs.xyz/docs/faq/custom_repositories
@@ -13,14 +13,14 @@
 
 
 [releases]: https://github.com/ThierryBourbon/Home-Assistant-custom-components-samsung-Soundbar/releases/latest
-[downloads_total_shield]: https://img.shields.io/github/downloads/ThierryBourbon/Home-Assistant-custom-components-samsung-Soundbar/total
+[downloads_total_shield]: https://img.shields.io/github/downloads/ThierryBourbon/Home-Assistant-Samsung-Soundbar/total
+
 
 [buy_me_a_coffee_shield]: https://img.shields.io/static/v1.svg?label=%20&message=Buy%20me%20a%20coffee&color=6f4e37&logo=buy%20me%20a%20coffee&logoColor=white
 [buy_me_a_coffee]: https://www.buymeacoffee.com/thierrybourbon
 
 
-[paypal_me_shield]: https://img.shields.io/static/v1.svg?label=%20&message=PayPal.Me&logo=paypal
-[paypal_me]: https://paypal.me/thierryBourbon
+
 
 # samsung Soundbar
 
