@@ -2,9 +2,9 @@
   "domain": "samsung_soundbar",
   "name": "samsung Soundbar",
   "codeowners": ["@PiotrMachowski","@thierryBourbon"],
-  "documentation": "https://github.com/thierryBourbon/Home-Assistant-custom-components-samsung-Soundbar/README.md",
+  "documentation": "https://github.com/thierryBourbon/Home-Assistant-Samsung-Soundbar",
   "iot_class": "cloud_polling",
-  "issue_tracker": "https://github.com/thierryBourbon/Home-Assistant-custom-components-samsung-Soundbar/issues",
+  "issue_tracker": "https://github.com/thierryBourbon/Home-Assistant-Samsung-Soundbar/issues",
   "requirements": [],
   "version": "v1.2.2"
 
