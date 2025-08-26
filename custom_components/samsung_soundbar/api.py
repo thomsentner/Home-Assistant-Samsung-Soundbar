@@ -183,7 +183,7 @@ class SoundbarApi:
             API_FULL = API_COMMAND_DATA + API_COMMAND_ARG + API_END
             cmdurl = requests.post(api_command, data=API_FULL, headers=request_headers)
 
-        self.async_schedule_update_ha_state()
+        self.schedule_update_ha_state()
 
 
 class SoundbarApiSwitch:
@@ -289,4 +289,4 @@ class SoundbarApiSwitch:
                     api_command, data=API_FULL, headers=request_headers
                 )
 
-        self.async_schedule_update_ha_state()
+        self.schedule_update_ha_state()
